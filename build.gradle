@@ -1,0 +1,162 @@
+plugins {
+    id 'org.jetbrains.kotlin.android'
+}
+if (isBaseApp.toBoolean()) {
+    apply plugin: "com.android.application"
+} else {
+    apply plugin: "com.android.library"
+}
+//apply from: 'tinker-support.gradle'
+
+android {
+    compileSdk rootProject.ext.android["compileSdkVersion"]
+
+    defaultConfig {
+        if (isBaseApp.toBoolean()) {
+            applicationId "com.study.KotlinStudyProject"
+        }
+        minSdk rootProject.ext.android["minSdkVersion"]
+        targetSdk rootProject.ext.android["targetSdkVersion"]
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+    }
+
+    sourceSets {
+        main {
+            if (isBaseApp.toBoolean()) {
+                manifest.srcFile "src/main/test/AndroidManifest.xml"
+            } else {
+                manifest.srcFile "src/main/AndroidManifest.xml"
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.android.jdkVersion
+        targetCompatibility rootProject.ext.android.jdkVersion
+    }
+    kotlinOptions {
+        jvmTarget = rootProject.ext.android.jdkVersion
+    }
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    api rootProject.ext.materialLibs
+    api rootProject.ext.networkLibs
+    api rootProject.ext.buglyLibs
+
+    api rootProject.ext.aspectJ["aspectjrt"]
+
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+import org.aspectj.bridge.IMessage
+
+import org.aspectj.bridge.MessageHandler
+
+import org.aspectj.tools.ajc.Main
+
+final def log = project.logger
+
+final def variants
+if (isBaseApp.toBoolean()) {
+    variants = project.android.applicationVariants
+} else {
+    variants = project.android.libraryVariants
+}
+
+variants.all { variant ->
+
+    if (!variant.buildType.isDebuggable()) {
+
+        log.debug("Skipping non-debuggable build type '${variant.buildType.name}'.")
+
+        return
+
+    }
+
+    JavaCompile javaCompile = variant.javaCompile
+
+    javaCompile.doLast {
+
+        String[] args = ["-showWeaveInfo",
+
+                         "-1.8",
+
+                         "-inpath", javaCompile.destinationDirectory.toString(),
+
+                         "-aspectpath", javaCompile.classpath.asPath,
+
+                         "-d", javaCompile.destinationDirectory.toString(),
+
+                         "-classpath", javaCompile.classpath.asPath,
+
+                         "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
+
+        log.debug "ajc args: " + Arrays.toString(args)
+
+        MessageHandler handler = new MessageHandler(true)
+
+        new Main().run(args, handler)
+
+        for (IMessage message : handler.getMessages(null, true)) {
+
+            switch (message.getKind()) {
+
+                case IMessage.ABORT:
+
+                case IMessage.ERROR:
+
+                case IMessage.FAIL:
+
+                    log.error message.message, message.thrown
+
+                    break
+
+                case IMessage.WARNING:
+
+                    log.warn message.message, message.thrown
+
+                    break
+
+                case IMessage.INFO:
+
+                    log.info message.message, message.thrown
+
+                    break
+
+                case IMessage.DEBUG:
+
+                    log.debug message.message, message.thrown
+
+                    break
+
+            }
+
+        }
+
+    }
+
+}

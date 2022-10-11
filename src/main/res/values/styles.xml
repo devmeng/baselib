@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="NavigationViewHeaderContent">
+        <item name="android:textColor">@color/color_white_FFF</item>
+    </style>
+
+    <style name="MainToolBarColorStyle" parent="NavigationViewHeaderContent">
+        <item name="android:tint">@color/color_white_FFF</item>
+    </style>
+
+    <style name="BaseToolbarStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--    appbar background color    -->
+        <item name="colorPrimary">@color/color_black_333</item>
+        <!--    status bar background color    -->
+        <item name="colorPrimaryVariant">@color/color_black_202020</item>
+
+        <item name="android:background">@color/color_black_333</item>
+    </style>
+</resources>
