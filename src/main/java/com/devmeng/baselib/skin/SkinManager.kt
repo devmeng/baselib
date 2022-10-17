@@ -101,10 +101,12 @@ class SkinManager : Observable() {
                 val pkgManager = application.packageManager
                 val packageArchiveInfo =
                     pkgManager.getPackageArchiveInfo(skinPath, PackageManager.GET_ACTIVITIES)
-                val pkgName = packageArchiveInfo!!.packageName
-                //存储并应用皮肤包资源，此时还没有进行皮肤的切换
-                SkinPreference.instance.setSkin(skinPath)
-                SkinResources.instance.applySkin(skinResources, pkgName)
+                if (packageArchiveInfo != null) {
+                    val pkgName = packageArchiveInfo.packageName
+                    //存储并应用皮肤包资源，此时还没有进行皮肤的切换
+                    SkinPreference.instance.setSkin(skinPath)
+                    SkinResources.instance.applySkin(skinResources, pkgName)
+                }
 
             } catch (e: Exception) {
                 e.printStackTrace()

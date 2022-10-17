@@ -1,9 +1,11 @@
 package com.devmeng.baselib.skin
 
+import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import com.devmeng.baselib.skin.utils.SkinThemeUtils
 import com.devmeng.baselib.utils.Logger
 import java.lang.reflect.Constructor
 import java.util.*
@@ -28,7 +30,7 @@ import java.util.*
  * @see SkinAttribute.applySkin
  *
  */
-class SkinLayoutFactory : LayoutInflater.Factory2, Observer {
+class SkinLayoutFactory(val activity: Activity) : LayoutInflater.Factory2, Observer {
 
     private val viewConMap: HashMap<String, Constructor<out View>> = hashMapOf()
 
@@ -101,6 +103,7 @@ class SkinLayoutFactory : LayoutInflater.Factory2, Observer {
     }
 
     override fun update(o: Observable?, arg: Any?) {
+        SkinThemeUtils.updateStatusBarState(activity)
         //由 SkinManager 通知并应用皮肤，开始根据属性换肤
         skinAttribute.applySkin()
     }

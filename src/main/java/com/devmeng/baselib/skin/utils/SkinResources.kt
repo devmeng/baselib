@@ -89,11 +89,13 @@ class SkinResources {
             return resId
         }
         //例如: @drawable/icon -> drawable
+        val resName = context.resources.getResourceName(resId)
         val typeName = context.resources.getResourceTypeName(resId)
         //例如: @drawable/icon -> icon
         val entryName = context.resources.getResourceEntryName(resId)
-        Logger.d("entryName -> $entryName")
+        Logger.d("resName -> $resName")
         Logger.d("typeName -> $typeName")
+        Logger.d("entryName -> $entryName")
         Logger.d("skinPkgName -> $skinPkgName")
         return skinResources!!.getIdentifier(entryName, typeName, skinPkgName)
     }

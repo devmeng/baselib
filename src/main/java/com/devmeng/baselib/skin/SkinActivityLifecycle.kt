@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
+import com.devmeng.baselib.skin.utils.SkinThemeUtils
 
 /**
  * Created by Richard
@@ -20,7 +21,8 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
 
     @SuppressLint("DiscouragedPrivateApi")
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-
+        //防止重启状态栏还原
+//        SkinThemeUtils.updateStatusBarState(activity)
         val layoutInflater = LayoutInflater.from(activity)
         try {
             //根据源码中 setFactory2 方法需将 mFactorySet 先设置成 false，才可使用
@@ -31,7 +33,7 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        val factory = SkinLayoutFactory()
+        val factory = SkinLayoutFactory(activity)
         layoutInflater.factory2 = factory
         //注册观察者
         SkinManager.instance.addObserver(factory)
@@ -42,7 +44,8 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
     }
 
     override fun onActivityResumed(activity: Activity) {
-
+        //防止重启状态栏还原
+        SkinThemeUtils.updateStatusBarState(activity)
     }
 
     override fun onActivityPaused(activity: Activity) {
