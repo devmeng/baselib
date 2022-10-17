@@ -34,10 +34,10 @@
         android:layout_marginHorizontal="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_60"
         android:paddingHorizontal="@dimen/dp_20"
-        app:operatorType="clear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:operatorType="clear" />
 
     <com.devmeng.baselib.widget.operateEditText.OperateEditText
         android:id="@+id/oet_psw"
@@ -45,10 +45,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_20"
         android:paddingHorizontal="@dimen/dp_20"
-        app:operatorType="psw"
         app:layout_constraintEnd_toEndOf="@+id/oet_account"
         app:layout_constraintStart_toStartOf="@+id/oet_account"
-        app:layout_constraintTop_toBottomOf="@+id/oet_account" />
+        app:layout_constraintTop_toBottomOf="@+id/oet_account"
+        app:operatorType="psw" />
 
     <com.devmeng.baselib.widget.CornerShadowLayout
         android:id="@+id/cs_sign_in_btn"

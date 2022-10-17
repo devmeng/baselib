@@ -3,6 +3,7 @@ package com.devmeng.baselib.base
 import android.app.Application
 import android.content.Intent
 import com.devmeng.baselib.R
+import com.devmeng.baselib.skin.SkinManager
 import com.devmeng.baselib.utils.Logger
 import com.devmeng.baselib.utils.NetworkManager
 import com.tencent.bugly.Bugly
@@ -22,6 +23,8 @@ open class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        //动态换肤功能初始化
+        SkinManager.init(this)
 
         NetworkManager.instance.registerNetworkListener(this)
 
