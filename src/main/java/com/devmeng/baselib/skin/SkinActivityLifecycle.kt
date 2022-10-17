@@ -10,6 +10,9 @@ import android.view.LayoutInflater
  * Created by Richard
  * Version : 1
  * Description :
+ * 以切面编程的形式为每个 Activity 配置其相应的 LayoutFactory 从做换肤的准备
+ * 并且对每一个 Factory 进行观察者注册
+ *
  */
 class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
 
@@ -20,6 +23,7 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
 
         val layoutInflater = LayoutInflater.from(activity)
         try {
+            //根据源码中 setFactory2 方法需将 mFactorySet 先设置成 false，才可使用
             val field = LayoutInflater::class.java.getDeclaredField("mFactorySet")
             field.isAccessible = true
             field.setBoolean(layoutInflater, false)
@@ -54,7 +58,7 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
     }
 
     override fun onActivityDestroyed(activity: Activity) {
-        //删除观察者
+        //取消观察者
         val factory = factoryMap.remove(activity)
         SkinManager.instance.deleteObserver(factory)
     }

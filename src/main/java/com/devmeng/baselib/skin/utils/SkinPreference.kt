@@ -8,6 +8,7 @@ import com.devmeng.baselib.utils.ConstantUtils
  * Created by Richard
  * Version : 1
  * Description :
+ * 使用 SharedPreference 存储皮肤包路径
  */
 class SkinPreference {
 

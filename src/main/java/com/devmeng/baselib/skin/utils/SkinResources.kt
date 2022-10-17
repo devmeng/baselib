@@ -68,6 +68,12 @@ class SkinResources {
         }
     }
 
+    /**
+     * 应用皮肤
+     * @param resources 客制化皮肤 Resources
+     * @param pkgName 皮肤包所在的 package
+     * @see com.devmeng.baselib.skin.SkinManager.loadSkin
+     */
     fun applySkin(resources: Resources, pkgName: String) {
         skinResources = resources
         skinPkgName = pkgName
@@ -76,13 +82,16 @@ class SkinResources {
 
     /**
      * 获取标识符
+     * @param resId 皮肤包中皮肤属性对应的资源 id 例: @drawable/icon 对应的 id: Int
      */
     fun getIdentifier(resId: Int): Int {
         if (isDefaultSkin) {
             return resId
         }
-        val entryName = context.resources.getResourceEntryName(resId)
+        //例如: @drawable/icon -> drawable
         val typeName = context.resources.getResourceTypeName(resId)
+        //例如: @drawable/icon -> icon
+        val entryName = context.resources.getResourceEntryName(resId)
         Logger.d("entryName -> $entryName")
         Logger.d("typeName -> $typeName")
         Logger.d("skinPkgName -> $skinPkgName")

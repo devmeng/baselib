@@ -18,6 +18,17 @@ import java.util.List;
  * Version : 1
  * Description :
  * 需要换肤的 View
+ * 换肤所需的属性、属性值 pairList
+ *
+ * @see #pairList
+ * 应用皮肤: 遍历 pairList 获取换肤使用的属性及属性值
+ * 并与 SkinAttribute#attributeList 中的元素一一对应
+ * @see #applySkin()
+ * @see com.devmeng.baselib.skin.SkinAttribute
+ * <p>
+ * 换肤时通过 SkinResources 获取
+ * 注: 如 SkinAttribute#attributeList 增加元素，
+ * 则需要在 applySkin 方法的 switch 语句中增加方案 case
  */
 public class SkinView {
 
@@ -29,6 +40,16 @@ public class SkinView {
         this.pairList = pairList;
     }
 
+    /**
+     * 应用皮肤
+     * 1.遍历 #pairList 获取换肤属性及其换肤前的属性值
+     * 2.由 SkinResources 对象获取皮肤属性值
+     * 皮肤属性对应 SkinAttribute.attributeList 中的元素
+     *
+     * @see com.devmeng.baselib.skin.SkinAttribute
+     * 注: 如 SkinAttribute#attributeList 增加元素，
+     * 则需要在 switch 语句中增加方案 case 并从 SkinResources 中获取对应资源
+     */
     public void applySkin() {
         for (SkinPair skinPair : pairList) {
             String attrName = skinPair.attrName;

@@ -12,7 +12,8 @@ import com.devmeng.baselib.skin.utils.SkinThemeUtils
  * Description :
  * 更换皮肤时所需更换的属性
  *
- * 注意: attributeList 在增加属性个体时需要对 @see #SkinView 中的 applySkin() 方法的 switch 增加 case
+ * 注意: attributeList 在增加属性个体时
+ * @see SkinView.applySkin 需在该方法的 switch 语句增加 case
  */
 class SkinAttribute {
 
@@ -43,6 +44,16 @@ class SkinAttribute {
          */
     }
 
+    /**
+     * 获取并缓存 view 中换肤所需的属性
+     * @param view 控件
+     * @param attrs 控件的所有属性
+     * 遍历所有属性，将每个元素与 attributeList 中的属性名称对比并缓存至 SkinPair 中
+     * 并在应用所有的控件的换肤属性缓存完毕之后 更换皮肤
+     * @see attributeList
+     * @see SkinPair 缓存 view 所需换肤的所有属性
+     * @see SkinView 需要换肤的控件，包含该控件以及属性、属性值
+     */
     fun load(view: View, attrs: AttributeSet) {
         val skinPairList = mutableListOf<SkinPair>()
         for (index in 0 until attrs.attributeCount) {
@@ -78,7 +89,11 @@ class SkinAttribute {
         }
     }
 
+    /**
+     * 应用皮肤
+     */
     fun applySkin() {
+        //遍历需换肤控件并开始换肤
         for (skinView in skinViews) {
             skinView.applySkin()
         }
