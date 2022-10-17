@@ -195,10 +195,10 @@ class CornerShadowLayout @JvmOverloads constructor(
             topLeftRadius,
             topRightRadius,
             topRightRadius,
-            bottomLeftRadius,
-            bottomLeftRadius,
             bottomRightRadius,
-            bottomRightRadius
+            bottomRightRadius,
+            bottomLeftRadius,
+            bottomLeftRadius,
         )
     }
 

@@ -17,7 +17,7 @@ import com.devmeng.baselib.skin.utils.SkinThemeUtils
  */
 class SkinAttribute {
 
-    private val attributeList = mutableListOf<String>()
+    val attributeList = mutableListOf<String>()
     private val skinViews = mutableListOf<SkinView>()
 
     init {

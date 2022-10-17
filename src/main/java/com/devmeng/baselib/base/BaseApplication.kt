@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Intent
 import com.devmeng.baselib.R
 import com.devmeng.baselib.skin.SkinManager
+import com.devmeng.baselib.ui.tinker.UpgradeActivity
 import com.devmeng.baselib.utils.Logger
 import com.devmeng.baselib.utils.NetworkManager
 import com.tencent.bugly.Bugly
@@ -70,10 +71,10 @@ open class BaseApplication : Application() {
         Beta.upgradeListener =
             UpgradeListener { ret: Int, strategy: UpgradeInfo?, isManual: Boolean, isSilence: Boolean ->
                 if (strategy != null) {
-                    val i = Intent()
-//                    i.setClass(applicationContext, UpgradeActivity::class.java)
-                    i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    applicationContext.startActivity(i)
+                    val intent = Intent()
+                    intent.setClass(applicationContext, UpgradeActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    applicationContext.startActivity(intent)
                 }
             }
 

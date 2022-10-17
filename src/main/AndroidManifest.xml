@@ -34,6 +34,9 @@
             </intent-filter>
             -->
         </activity>
+        <activity
+            android:name=".ui.tinker.UpgradeActivity"
+            android:theme="@style/UpdateDialog" />
 
     </application>
 

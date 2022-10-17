@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--  保留小数后两位  -->
+    <string name="format_num_percent">%d%%</string>
+    <string name="keep_2_decimals">%.2f</string>
+    <string name="upgrade_version_num">版本号：%1$s</string>
+    <string name="upgrade_apk_size">更新大小：%1$sMB</string>
+    <string name="upgrade_time">更新时间：%1$s</string>
+    <string name="upgrade_introduce">更新说明：</string>
+    <string name="upgrade_experience">立即体验</string>
+    <string name="upgrade_re_download">重新下载</string>
+    <string name="upgrade_install">立即安装</string>
+    <string name="resume_upgrade">继续下载</string>
     <string name="format_android_call_h5_method">javascript:%1$s(%2$s)</string>
     <string name="format_lottie_name_images_assets_folder">lottie/%1$s/images</string>
     <string name="format_lottie_name_anim_json">lottie/%1$s/data.json</string>
