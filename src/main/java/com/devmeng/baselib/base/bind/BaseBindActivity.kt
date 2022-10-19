@@ -26,6 +26,11 @@ import java.lang.ref.WeakReference
  * Date : 2022/6/15  17:46
  * Version : 1
  * Description :
+ * 使用 ViewBinding 绑定对应的布局
+ * 基准类包含自定义 ToastView
+ * @see ToastView 可根据需求对 ToastView 的布局样式进行修改
+ *
+ *
  */
 abstract class BaseBindActivity<P : BasePresenter> : AppCompatActivity(), BaseView,
     View.OnClickListener {
