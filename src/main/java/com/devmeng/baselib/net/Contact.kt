@@ -1,7 +1,7 @@
 package com.devmeng.baselib.net
 
 import com.devmeng.baselib.base.BaseView
-import com.devmeng.baselib.beans.UserBean
+import com.devmeng.baselib.entities.UserBean
 
 /**
  * Created by Richard

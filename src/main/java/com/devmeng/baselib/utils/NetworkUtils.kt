@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.devmeng.baselib.annotation.Network
-import com.devmeng.baselib.beans.MethodManager
+import com.devmeng.baselib.entities.MethodManager
 
 /**
  * Created by Richard

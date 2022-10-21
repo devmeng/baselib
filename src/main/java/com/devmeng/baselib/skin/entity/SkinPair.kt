@@ -1,4 +1,4 @@
-package com.devmeng.baselib.skin.entity;
+package com.devmeng.baselib.skin.entity
 
 /**
  * Created by Richard
@@ -6,13 +6,4 @@ package com.devmeng.baselib.skin.entity;
  * Description :
  * 用于缓存换肤所需的属性及其属性值
  */
-public class SkinPair {
-
-    public String attrName;
-    public int resId;
-
-    public SkinPair(String attrName, int resId) {
-        this.attrName = attrName;
-        this.resId = resId;
-    }
-}
+data class SkinPair(var attrName: String, var resId: Int)

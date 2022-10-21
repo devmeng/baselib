@@ -1,4 +1,4 @@
-package com.devmeng.baselib.beans;
+package com.devmeng.baselib.entities;
 
 /**
  * Created by Richard -> MHS

@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
+import com.devmeng.baselib.skin.utils.SkinPreference
 import com.devmeng.baselib.skin.utils.SkinThemeUtils
 
 /**
@@ -46,6 +47,7 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
     override fun onActivityResumed(activity: Activity) {
         //防止重启状态栏还原
         SkinThemeUtils.updateStatusBarState(activity)
+        SkinManager.instance.loadSkin(SkinPreference.instance.getSkin())
     }
 
     override fun onActivityPaused(activity: Activity) {

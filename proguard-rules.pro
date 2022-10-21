@@ -21,5 +21,5 @@
 #-renamesourcefileattribute SourceFile
 
 -keepclasseswithmembernames
-class com.devmeng.baselib.beans.**
+class com.devmeng.baselib.entities.**
 

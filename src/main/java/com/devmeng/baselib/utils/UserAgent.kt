@@ -18,7 +18,7 @@ open class UserAgent {
 
     open fun getUserAgentInfo(context: Context, extra: String): String {
         val defaultUserAgent = WebSettings.getDefaultUserAgent(context)
-        var userAgent = StringBuilder()
+        val userAgent = StringBuilder()
         userAgent.append(defaultUserAgent).append(MD5Utils().getMD5Code(extra).toString())
         Logger.e("extra $extra : userAgent md5 -> $userAgent")
         return userAgent.toString()

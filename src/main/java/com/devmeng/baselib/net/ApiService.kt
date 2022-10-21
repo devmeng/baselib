@@ -1,9 +1,9 @@
 package com.devmeng.baselib.net
 
-import com.devmeng.baselib.beans.ArticleBean
-import com.devmeng.baselib.beans.BannerBean
-import com.devmeng.baselib.beans.HomePageArticleBean
-import com.devmeng.baselib.beans.UserBean
+import com.devmeng.baselib.entities.ArticleBean
+import com.devmeng.baselib.entities.BannerBean
+import com.devmeng.baselib.entities.HomePageArticleBean
+import com.devmeng.baselib.entities.UserBean
 import com.devmeng.baselib.utils.ConstantUtils
 import io.reactivex.Observable
 import retrofit2.http.*

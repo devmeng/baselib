@@ -2,7 +2,7 @@ package com.devmeng.baselib.presenters
 
 import com.devmeng.baselib.base.BaseObserver
 import com.devmeng.baselib.base.BasePresenter
-import com.devmeng.baselib.beans.UserBean
+import com.devmeng.baselib.entities.UserBean
 import com.devmeng.baselib.net.Contact
 import com.devmeng.baselib.net.DataService
 import com.devmeng.baselib.net.HttpResult
