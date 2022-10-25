@@ -1,5 +1,6 @@
 package com.devmeng.baselib.skin.entity
 
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
@@ -27,7 +28,7 @@ import com.devmeng.baselib.skin.utils.SkinResources.Companion.init
  * 注: 如 SkinAttribute.attributeList 增加元素，
  * 则需要在 applySkin 方法的 switch 语句中增加方案 case
  */
-class SkinView(var view: View, var pairList: List<SkinPair>) {
+data class SkinView(var view: View, var pairList: List<SkinPair>) {
     /**
      * 应用皮肤
      * 1.遍历 #pairList 获取换肤属性及其换肤前的属性值
@@ -37,8 +38,11 @@ class SkinView(var view: View, var pairList: List<SkinPair>) {
      * @see com.devmeng.baselib.skin.SkinAttribute
      * 注: 如 SkinAttribute.attributeList 增加元素，
      * 则需要在 switch 语句中增加方案 case 并从 SkinResources 中获取对应资源
+     * @param typeface 用于对皮肤包中定义特定字体的切换
      */
-    fun applySkin() {
+    fun applySkin(typeface: Typeface) {
+        //全局更改字体
+        applyTypeface(typeface)
         for ((attrName, resId) in pairList) {
             val skinResources = init(view.context.applicationContext)
             var top: Drawable? = null
@@ -74,9 +78,12 @@ class SkinView(var view: View, var pairList: List<SkinPair>) {
                 "drawableTint" -> TextViewCompat.setCompoundDrawableTintList(
                     (view as TextView), skinResources.getColorStateList(resId)
                 )
+                //局部更改字体
+//                "skinTypeface" -> applyTypeface(skinResources.getTypeface(resId))
+
             }
-            if (view is TextView) {
-                (view as TextView).setCompoundDrawablesRelativeWithIntrinsicBounds(
+            view.takeIf { view is TextView }.apply {
+                (view as? TextView)?.setCompoundDrawablesRelativeWithIntrinsicBounds(
                     left,
                     top,
                     right,
@@ -85,4 +92,14 @@ class SkinView(var view: View, var pairList: List<SkinPair>) {
             }
         }
     }
+
+    /**
+     * 应用皮肤包字体
+     */
+    private fun applyTypeface(skinTypeface: Typeface) {
+        view.takeIf { view is TextView }.apply {
+            (view as? TextView)?.typeface = skinTypeface
+        }
+    }
+
 }

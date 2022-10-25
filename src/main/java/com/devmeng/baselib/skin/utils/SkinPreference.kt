@@ -2,7 +2,7 @@ package com.devmeng.baselib.skin.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.devmeng.baselib.utils.ConstantUtils
+import com.devmeng.baselib.utils.EMPTY
 
 /**
  * Created by Richard
@@ -10,7 +10,7 @@ import com.devmeng.baselib.utils.ConstantUtils
  * Description :
  * 使用 SharedPreference 存储皮肤包路径
  */
-class SkinPreference {
+class SkinPreference private constructor() {
 
     private lateinit var context: Context
     private lateinit var sp: SharedPreferences
@@ -33,12 +33,12 @@ class SkinPreference {
 
     }
 
-    fun setSkin(skinPath: String = ConstantUtils.EMPTY) {
+    fun setSkin(skinPath: String = EMPTY) {
         sp.edit().putString(KEY_SKIN_PATH, skinPath).apply()
     }
 
     fun getSkin(): String {
-        return sp.getString(KEY_SKIN_PATH, ConstantUtils.EMPTY).toString()
+        return sp.getString(KEY_SKIN_PATH, EMPTY).toString()
     }
 
 

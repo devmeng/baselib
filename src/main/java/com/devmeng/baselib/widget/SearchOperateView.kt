@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.devmeng.baselib.R
 import com.devmeng.baselib.base.BaseAdapter
 import com.devmeng.baselib.base.BaseViewHolder
-import com.devmeng.baselib.utils.ConstantUtils
+import com.devmeng.baselib.utils.EMPTY
 import com.devmeng.baselib.utils.Logger
 import java.lang.ref.WeakReference
 
@@ -46,7 +46,7 @@ class SearchOperateView : LinearLayoutCompat,
     private var padding = 0
     private var paddingVertical = 0
     private var paddingHorizontal = 0
-    private var operateTitle = ConstantUtils.EMPTY
+    private var operateTitle = EMPTY
     private var titleColor = R.color.color_black_333
     private var tvBottomClearTxtColor = R.color.color_gray_6C6C6C
     private var titleSize = 16

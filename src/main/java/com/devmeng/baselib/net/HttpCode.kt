@@ -1,6 +1,7 @@
 package com.devmeng.baselib.net
 
-import com.devmeng.baselib.utils.ConstantUtils
+import com.devmeng.baselib.utils.EMPTY
+
 
 /**
  * Created by Richard -> MHS
@@ -20,7 +21,7 @@ enum class HttpCode {
 
     var inCode: Int = 0
 
-    var inDesc: String = ConstantUtils.EMPTY
+    var inDesc: String = EMPTY
 
     constructor()
 

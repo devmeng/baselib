@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.devmeng.baselib.R
 import com.devmeng.baselib.base.bind.BaseBindActivity
 import com.devmeng.baselib.databinding.ActivityBaseWebBinding
-import com.devmeng.baselib.utils.ConstantUtils
+import com.devmeng.baselib.utils.EMPTY
 import com.devmeng.baselib.utils.Logger
 import com.devmeng.baselib.utils.UserAgent
 
@@ -146,7 +146,7 @@ abstract class BaseWebActivity : BaseBindActivity<BasePresenter>() {
         BaseRunnable {
         protected abstract fun getParams(str: String?)
         override fun run() {
-            val paramsBuffer = StringBuffer(ConstantUtils.EMPTY)
+            val paramsBuffer = StringBuffer(EMPTY)
 
             for (index in mParams.indices) {
                 val param = mParams[index]

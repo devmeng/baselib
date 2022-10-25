@@ -14,7 +14,7 @@ import android.view.Gravity
 import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatEditText
 import com.devmeng.baselib.R
-import com.devmeng.baselib.utils.ConstantUtils
+import com.devmeng.baselib.utils.EMPTY
 import com.devmeng.baselib.utils.Logger
 import com.devmeng.baselib.widget.ToastView
 
@@ -77,7 +77,7 @@ class OperateEditText : AppCompatEditText, TextWatcher {
             setOperator(operatorType)
         }
         if (operatorType == OPERATOR_NONE) {
-            hintVar = ConstantUtils.EMPTY
+            hintVar = EMPTY
         }
         maxLines = 1
         isSingleLine = true
@@ -235,7 +235,7 @@ class OperateEditText : AppCompatEditText, TextWatcher {
         isPswVisible = !isPswVisible
     }
 
-    fun judgeAndToast(content: String = ConstantUtils.EMPTY): Boolean {
+    fun judgeAndToast(content: String = EMPTY): Boolean {
         when (tag) {
             OPERATOR_PSW -> {
                 if (text.isNullOrEmpty()) {

@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.devmeng.baselib.listener.NetChangeObserver
-import com.devmeng.baselib.utils.ConstantUtils
+import com.devmeng.baselib.utils.Action
 import com.devmeng.baselib.utils.Logger
 import com.devmeng.baselib.utils.NetType
 import com.devmeng.baselib.utils.NetworkUtils
@@ -25,7 +25,7 @@ class NetStateReceiver : BroadcastReceiver() {
             Logger.e("网络监听广播注册异常")
             return
         }
-        if (intent.action!!.equals(ConstantUtils.Action.ANDROID_NET_CHANGE_ACTION, true)) {
+        if (intent.action!!.equals(Action.ANDROID_NET_CHANGE_ACTION, true)) {
             Logger.d("网络发生变更")
             //赋值网络类型
             netType = NetworkUtils.getType()

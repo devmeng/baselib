@@ -24,6 +24,8 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         //防止重启状态栏还原
 //        SkinThemeUtils.updateStatusBarState(activity)
+        //加载皮肤包 字体
+        val skinTypeface = SkinThemeUtils.getSkinTypeface(activity)
         val layoutInflater = LayoutInflater.from(activity)
         try {
             //根据源码中 setFactory2 方法需将 mFactorySet 先设置成 false，才可使用
@@ -34,7 +36,7 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        val factory = SkinLayoutFactory(activity)
+        val factory = SkinLayoutFactory(activity, skinTypeface)
         layoutInflater.factory2 = factory
         //注册观察者
         SkinManager.instance.addObserver(factory)
@@ -47,6 +49,7 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
     override fun onActivityResumed(activity: Activity) {
         //防止重启状态栏还原
         SkinThemeUtils.updateStatusBarState(activity)
+
         SkinManager.instance.loadSkin(SkinPreference.instance.getSkin())
     }
 

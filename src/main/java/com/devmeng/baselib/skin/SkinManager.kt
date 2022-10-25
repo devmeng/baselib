@@ -6,7 +6,7 @@ import android.content.res.AssetManager
 import android.content.res.Resources
 import com.devmeng.baselib.skin.utils.SkinPreference
 import com.devmeng.baselib.skin.utils.SkinResources
-import com.devmeng.baselib.utils.ConstantUtils
+import com.devmeng.baselib.utils.EMPTY
 import com.devmeng.baselib.utils.Logger
 import java.util.*
 
@@ -24,16 +24,18 @@ import java.util.*
  * 3.通知观察者
  *
  */
-class SkinManager : Observable() {
+class SkinManager private constructor() : Observable(){
 
     private lateinit var application: Application
 
     companion object {
 
+        @JvmStatic
         val instance by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
             SkinManager()
         }
 
+        @JvmStatic
         fun init(application: Application): SkinManager {
             application.registerActivityLifecycleCallbacks(SkinActivityLifecycle())
             SkinPreference.init(application.applicationContext)
@@ -54,7 +56,7 @@ class SkinManager : Observable() {
      * @see SkinPreference
      * 3.通知观察者
      */
-    fun loadSkin(skinPath: String = ConstantUtils.EMPTY) {
+    fun loadSkin(skinPath: String = EMPTY) {
         if (skinPath.isNotEmpty()) {
             try {
                 Logger.d("skinPath -> $skinPath")

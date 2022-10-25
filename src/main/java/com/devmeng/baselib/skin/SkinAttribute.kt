@@ -1,7 +1,9 @@
 package com.devmeng.baselib.skin
 
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
+import android.widget.TextView
 import com.devmeng.baselib.skin.entity.SkinPair
 import com.devmeng.baselib.skin.entity.SkinView
 import com.devmeng.baselib.skin.utils.SkinThemeUtils
@@ -14,8 +16,9 @@ import com.devmeng.baselib.skin.utils.SkinThemeUtils
  *
  * 注意: attributeList 在增加属性个体时
  * @see SkinView.applySkin 需在该方法的 switch 语句增加 case
+ * @param skinTypeface 对应皮肤包中的特定字体
  */
-class SkinAttribute {
+class SkinAttribute(var skinTypeface: Typeface) {
 
     val attributeList = mutableListOf<String>()
     private val skinViews = mutableListOf<SkinView>()
@@ -39,6 +42,9 @@ class SkinAttribute {
         attributeList.add("drawableTopCompat")
         attributeList.add("drawableBottomCompat")
         attributeList.add("drawableTint")
+
+        //需局部更换字体时添加属性
+        attributeList.add("skinTypeface")
         /** 注意: attributeList 在增加属性个体时需要对
         #SkinView 中的 applySkin() 方法的 switch 增加 case
          */
@@ -81,10 +87,10 @@ class SkinAttribute {
         }
 
         //应用并缓存 皮肤及view
-        if (skinPairList.isNotEmpty()) {
+        if (skinPairList.isNotEmpty().or(view is TextView)) {
             val skinView =
                 SkinView(view, skinPairList)
-            skinView.applySkin()
+            skinView.applySkin(skinTypeface)
             skinViews.add(skinView)
         }
     }
@@ -95,7 +101,7 @@ class SkinAttribute {
     fun applySkin() {
         //遍历需换肤控件并开始换肤
         for (skinView in skinViews) {
-            skinView.applySkin()
+            skinView.applySkin(skinTypeface)
         }
     }
 

@@ -2,6 +2,7 @@ package com.devmeng.baselib.skin
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -28,9 +29,13 @@ import java.util.*
  * 3.观察者更新状态 -> 切换皮肤
  * @see update
  * @see SkinAttribute.applySkin
+ * @param activity
+ * @param skinTypeface 对应皮肤包中的特定字体
  *
  */
-class SkinLayoutFactory(val activity: Activity) : LayoutInflater.Factory2, Observer {
+class SkinLayoutFactory(val activity: Activity, val skinTypeface: Typeface) :
+    LayoutInflater.Factory2,
+    Observer {
 
     private val viewConMap: HashMap<String, Constructor<out View>> = hashMapOf()
 
@@ -50,7 +55,7 @@ class SkinLayoutFactory(val activity: Activity) : LayoutInflater.Factory2, Obser
         Context::class.java, AttributeSet::class.java
     )
 
-    private val skinAttribute = SkinAttribute()
+    private val skinAttribute = SkinAttribute(skinTypeface)
 
     override fun onCreateView(
         parent: View?,
@@ -104,6 +109,8 @@ class SkinLayoutFactory(val activity: Activity) : LayoutInflater.Factory2, Obser
 
     override fun update(o: Observable?, arg: Any?) {
         SkinThemeUtils.updateStatusBarState(activity)
+        val typeface = SkinThemeUtils.getSkinTypeface(activity)
+        skinAttribute.skinTypeface = typeface
         //由 SkinManager 通知并应用皮肤，开始根据属性换肤
         skinAttribute.applySkin()
     }

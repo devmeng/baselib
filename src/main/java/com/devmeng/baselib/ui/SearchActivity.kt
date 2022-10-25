@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.devmeng.baselib.base.BasePresenter
 import com.devmeng.baselib.base.bind.BaseBindActivity
 import com.devmeng.baselib.databinding.ActivitySearchBinding
-import com.devmeng.baselib.utils.ConstantUtils
+import com.devmeng.baselib.utils.EMPTY
 import com.devmeng.baselib.utils.Logger
 import com.devmeng.baselib.widget.OperateWidget
 import com.devmeng.baselib.widget.SearchOperateView
@@ -27,8 +27,8 @@ class SearchActivity : BaseBindActivity<BasePresenter>(), OperateWidget.OnWidget
     }
 
     private var searchBinding: ActivitySearchBinding? = null
-    private var lastSearch = ConstantUtils.EMPTY
-    private var searchHistory = ConstantUtils.EMPTY
+    private var lastSearch = EMPTY
+    private var searchHistory = EMPTY
 
     override fun initContentViewBinding(): View {
         searchBinding = ActivitySearchBinding.inflate(layoutInflater)

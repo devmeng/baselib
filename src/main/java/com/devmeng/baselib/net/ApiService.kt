@@ -4,7 +4,8 @@ import com.devmeng.baselib.entities.ArticleBean
 import com.devmeng.baselib.entities.BannerBean
 import com.devmeng.baselib.entities.HomePageArticleBean
 import com.devmeng.baselib.entities.UserBean
-import com.devmeng.baselib.utils.ConstantUtils
+import com.devmeng.baselib.utils.PATH
+import com.devmeng.baselib.utils.Params
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -22,13 +23,13 @@ interface ApiService {
     fun getStickTopList(): Observable<HttpResult<MutableList<ArticleBean>>>
 
     @GET(ApiConstant.HomePage.ARTICLE_LIST)
-    fun getNormalArticleList(@Path(ConstantUtils.PATH.PAGE) page: Int): Observable<HttpResult<HomePageArticleBean>>
+    fun getNormalArticleList(@Path(PATH.PAGE) page: Int): Observable<HttpResult<HomePageArticleBean>>
 
     @FormUrlEncoded
     @POST(ApiConstant.UserOperation.SIGN_IN)
     fun signIn(
-        @Field(ConstantUtils.Params.ACCOUNT) account: String,
-        @Field(ConstantUtils.Params.PASSWORD) password: String
+        @Field(Params.ACCOUNT) account: String,
+        @Field(Params.PASSWORD) password: String
     ): Observable<HttpResult<UserBean>>
 
 }

@@ -1,7 +1,5 @@
 package com.devmeng.baselib.net
 
-import com.devmeng.baselib.utils.ConstantUtils
-
 /**
  * Created by Richard -> MHS
  * Date : 2022/5/30  15:56
@@ -20,40 +18,36 @@ interface ApiConstant {
 
     }
 
-    interface HomePage {
-        companion object {
-            //get 文章列表
-            const val ARTICLE_LIST = "article/list/{${ConstantUtils.PATH.PAGE}}/json"
+    object HomePage {
+        //get 文章列表
+        const val ARTICLE_LIST = "article/list/{PAGE}/json"
 
-            //首页 Banner
-            const val HOME_BANNER = "banner/json"
+        //首页 Banner
+        const val HOME_BANNER = "banner/json"
 
-            //常用网络
-            const val USUALLY_USE_NETWORK = "friend/json"
+        //常用网络
+        const val USUALLY_USE_NETWORK = "friend/json"
 
-            //置顶文章
-            const val STICK_TOP_ARTICLE = "article/top/json"
-        }
+        //置顶文章
+        const val STICK_TOP_ARTICLE = "article/top/json"
     }
 
-    interface UserOperation {
-        companion object {
-            /**
-             * 参数
-             * 文章 id:拼接在 url 上
-             * title: 文章标题
-             * link: 文章 url
-             * author: 作者
-             */
-            const val COLLECT_ARTICLE =
-                "lg/collect/user_article/update/{${ConstantUtils.PATH.ARTICLE_ID}}/json"
+    object UserOperation {
+        /**
+         * 参数
+         * 文章 id:拼接在 url 上
+         * title: 文章标题
+         * link: 文章 url
+         * author: 作者
+         */
+        const val COLLECT_ARTICLE =
+            "lg/collect/user_article/update/{article_id}/json"
 
-            const val CANCEL_COLLECT_ARTICLE =
-                "lg/uncollect_originId/{${ConstantUtils.PATH.ARTICLE_ID}}/json"
+        const val CANCEL_COLLECT_ARTICLE =
+            "lg/uncollect_originId/{article_id}/json"
 
-            const val SIGN_IN = ""
+        const val SIGN_IN = ""
 
-        }
     }
 
 }

@@ -15,7 +15,7 @@ class SPUtils {
         private const val PREFERENCES_NAME: String = "config"
 
         fun getString(context: Context, key: String): String? {
-            return getString(context, key, ConstantUtils.EMPTY)
+            return getString(context, key, EMPTY)
         }
 
         fun getString(context: Context, key: String, defaultValue: String): String? {

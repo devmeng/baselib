@@ -96,7 +96,7 @@ class DateUtils {
     @SuppressLint("SimpleDateFormat")
     fun judgeWhetherToday(milSecond: Long): String {
         val date = Date(milSecond)
-        var hintDate = ConstantUtils.EMPTY
+        var hintDate = EMPTY
         //获取日历
         val cal = Calendar.getInstance()
         //先获取年份

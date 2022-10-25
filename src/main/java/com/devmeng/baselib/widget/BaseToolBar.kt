@@ -14,7 +14,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.devmeng.baselib.R
-import com.devmeng.baselib.utils.ConstantUtils
+import com.devmeng.baselib.utils.EMPTY
 import com.devmeng.baselib.utils.Logger
 
 /**
@@ -58,7 +58,7 @@ class BaseToolBar @JvmOverloads constructor(
     private var backIconRes: Int = 0
 
     //标题文本
-    private var titleText: String = ConstantUtils.EMPTY
+    private var titleText: String = EMPTY
 
     //标题文本尺寸
     private var titleTextSize = 16F

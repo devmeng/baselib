@@ -45,7 +45,7 @@ class NetworkManager private constructor() {
         this.application = application
         //动态注册广播
         val filter = IntentFilter()
-        filter.addAction(ConstantUtils.Action.ANDROID_NET_CHANGE_ACTION)
+        filter.addAction(Action.ANDROID_NET_CHANGE_ACTION)
         application.registerReceiver(netStateReceiver, filter)
     }
 
@@ -59,7 +59,7 @@ class NetworkManager private constructor() {
             connMgr.registerNetworkCallback(networkRequest, NetworkCallbackImpl())
         } else {
             val filter = IntentFilter()
-            filter.addAction(ConstantUtils.Action.ANDROID_NET_CHANGE_ACTION)
+            filter.addAction(Action.ANDROID_NET_CHANGE_ACTION)
             application.registerReceiver(netChangeReceiver, filter)
         }
     }

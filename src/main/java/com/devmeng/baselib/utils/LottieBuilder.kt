@@ -69,7 +69,7 @@ object LottieBuilder {
         fun urlParseFolderName(url: String?): Builder {
             val split: Array<String> = TextUtils.split(url, File.separator)
             val fileName = split[split.size - 1]
-            mAssetsFolderName = fileName.substring(0, fileName.indexOf(ConstantUtils.DOT))
+            mAssetsFolderName = fileName.substring(0, fileName.indexOf(DOT))
             Logger.e("fileName => $fileName")
             return this
         }
@@ -85,7 +85,7 @@ object LottieBuilder {
             val fileName = split[split.size - 1]
             mAssetsFolderName = secondFolderName + File.separator + fileName.substring(
                 0,
-                fileName.indexOf(ConstantUtils.DOT)
+                fileName.indexOf(DOT)
             )
             Logger.e("fileName => $fileName")
             return this

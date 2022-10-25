@@ -68,14 +68,8 @@ dependencies {
 
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-}
-
 import org.aspectj.bridge.IMessage
-
 import org.aspectj.bridge.MessageHandler
-
 import org.aspectj.tools.ajc.Main
 
 final def log = project.logger

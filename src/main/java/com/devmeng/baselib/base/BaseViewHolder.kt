@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.devmeng.baselib.utils.ConstantUtils
+import com.devmeng.baselib.utils.EMPTY
 
 /**
  * Created by Richard -> MHS
@@ -56,7 +56,7 @@ open class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     open fun setText(@IdRes id: Int, @StringRes strId: Int) {
-        setText(id, strId, ConstantUtils.EMPTY)
+        setText(id, strId, EMPTY)
     }
 
     open fun setText(@IdRes id: Int, @StringRes strId: Int, extraStr: String) {
