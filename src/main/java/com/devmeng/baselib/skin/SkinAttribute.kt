@@ -21,6 +21,7 @@ import com.devmeng.baselib.skin.utils.SkinThemeUtils
 class SkinAttribute(var skinTypeface: Typeface) {
 
     val attributeList = mutableListOf<String>()
+    private var widgetAttrList: List<String> = listOf()
     private val skinViews = mutableListOf<SkinView>()
 
     init {
@@ -62,11 +63,22 @@ class SkinAttribute(var skinTypeface: Typeface) {
      */
     fun load(view: View, attrs: AttributeSet) {
         val skinPairList = mutableListOf<SkinPair>()
+
+        //添加自定义 View 使用的自定义属性
+        view.takeIf { view is SkinWidgetSupport }.apply {
+            (view as? SkinWidgetSupport)?.apply {
+                widgetAttrList = attrsList
+                attributeList.addAll(attrsList)
+            }
+        }
+
         for (index in 0 until attrs.attributeCount) {
             val attrName = attrs.getAttributeName(index)
             if (attributeList.contains(attrName)) {
                 val attrValue = attrs.getAttributeValue(index)
-                if (attrValue.startsWith("#")) {
+                if (attrValue.startsWith("#").or(attrValue.contains("x"))
+                        .or(!attrValue.startsWith("@"))
+                ) {
                     //忽略值设置为"#"开头的属性
                     continue
                 }
@@ -87,12 +99,16 @@ class SkinAttribute(var skinTypeface: Typeface) {
         }
 
         //应用并缓存 皮肤及view
-        if (skinPairList.isNotEmpty().or(view is TextView)) {
+        if (skinPairList.isNotEmpty().or(view is TextView).or(view is SkinWidgetSupport)) {
+
             val skinView =
                 SkinView(view, skinPairList)
             skinView.applySkin(skinTypeface)
             skinViews.add(skinView)
         }
+
+        //移除自定义 View 使用的自定义属性
+        attributeList.takeIf { widgetAttrList.isNotEmpty() }?.removeAll(widgetAttrList)
     }
 
     /**

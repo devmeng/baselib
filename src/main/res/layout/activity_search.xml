@@ -82,7 +82,7 @@
         app:allCornerRadius="@dimen/dp_20"
         app:backColor="@color/color_white_FFF"
         app:borderColor="@color/color_black_333"
-        app:backRes="@drawable/icon1"
+        app:backRes="@drawable/icon5"
         app:borderWidth="@dimen/dp_1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

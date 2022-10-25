@@ -27,4 +27,6 @@
     <color name="color_trans_20">#33000000</color>
     <color name="color_trans_30">#4D000000</color>
     <color name="color_trans_40">#66000000</color>
+
+    <color name="testCSL_shadow_color">#FF4E4E</color>
 </resources>

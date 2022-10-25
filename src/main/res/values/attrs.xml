@@ -5,6 +5,7 @@
 
     </declare-styleable>
     <declare-styleable name="BaseToolBar">
+        <attr name="isEndToolAvailable" format="boolean" />
         <attr name="backIconRes" format="reference" />
         <attr name="titleText" format="string" />
         <attr name="titleTextSize" format="dimension" />

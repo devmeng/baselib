@@ -14,6 +14,9 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.devmeng.baselib.R
+import com.devmeng.baselib.skin.SkinWidgetSupport
+import com.devmeng.baselib.skin.entity.SkinPair
+import com.devmeng.baselib.skin.utils.SkinResources
 import com.devmeng.baselib.utils.EMPTY
 import com.devmeng.baselib.utils.Logger
 
@@ -44,8 +47,19 @@ class BaseToolBar @JvmOverloads constructor(
     context: Context,
     var attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayoutCompat(context, attrs, defStyleAttr), View.OnClickListener {
+) : LinearLayoutCompat(context, attrs, defStyleAttr), View.OnClickListener, SkinWidgetSupport {
 
+    override val attrsList: List<String> = listOf(
+        "isEndToolAvailable",
+        "backIconRes",
+        "titleText",
+        "titleTextSize",
+        "titleGravity",
+        "titleTextColor",
+        "titlePaddingHorizontal",
+        "endIconRes",
+        "endIconTint"
+    )
     private val imgBackClose: AppCompatImageView = AppCompatImageView(context)
     private val tvTitle: AppCompatTextView = AppCompatTextView(context)
     private val imgEndTool: AppCompatImageView = AppCompatImageView(context)
@@ -91,33 +105,52 @@ class BaseToolBar @JvmOverloads constructor(
     private fun initConfig() {
         val typeAttrs = context.obtainStyledAttributes(attrs, R.styleable.BaseToolBar)
         with(typeAttrs) {
+            //尾部工具是否可用
+            isEndToolAvailable =
+                getBoolean(R.styleable.BaseToolBar_isEndToolAvailable, isEndToolAvailable)
+            //返回按钮图片资源
             backIconRes = getResourceId(R.styleable.BaseToolBar_backIconRes, backIconRes)
+            //标题文本
             titleText = getString(R.styleable.BaseToolBar_titleText).toString()
+            //标题大小
             titleTextSize = getDimension(R.styleable.BaseToolBar_titleTextSize, titleTextSize)
+            //标题颜色
             titleTextColor =
                 getColor(R.styleable.BaseToolBar_titleTextColor, titleTextColor)
+            //尾部工具 icon 资源
             endIconRes =
                 getResourceId(R.styleable.BaseToolBar_endIconRes, endIconRes)
+
+            //尾部工具渲染
             endIconTint = getColor(R.styleable.BaseToolBar_endIconTint, endIconTint)
+            //标题重心
             titleGravity = getInteger(R.styleable.BaseToolBar_titleGravity, titleGravity)
+            //标题内边距
             titlePaddingHorizontal =
                 getDimensionPixelOffset(
                     R.styleable.BaseToolBar_titlePaddingHorizontal,
                     titlePaddingHorizontal
                 )
 
-
             recycle()
         }
 
-        imgBackClose.setImageResource(backIconRes)
-        tvTitle.text = titleText
-        tvTitle.setTextColor(titleTextColor)
-        tvTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize)
-        tvTitle.setPadding(titlePaddingHorizontal, 0, titlePaddingHorizontal, 0)
-        tvTitle.gravity = titleGravity.or(Gravity.CENTER_VERTICAL)
-        imgEndTool.visibility = GONE
-        imgBackClose.setOnClickListener(this)
+        imgBackClose.apply {
+            setImageResource(backIconRes)
+            setOnClickListener(this@BaseToolBar)
+        }
+
+
+        tvTitle.apply {
+            text = titleText
+            setTextColor(titleTextColor)
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize)
+            setPadding(titlePaddingHorizontal, 0, titlePaddingHorizontal, 0)
+            gravity = titleGravity.or(Gravity.CENTER_VERTICAL)
+        }
+        imgEndTool.apply {
+            visibility = GONE
+        }
     }
 
 
@@ -170,9 +203,9 @@ class BaseToolBar @JvmOverloads constructor(
         removeAllViews()
         addView(imgBackClose)
         addView(tvTitle)
-        if (isEndToolAvailable || endIconRes != 0) {
-            imgEndTool.visibility = VISIBLE
-            imgEndTool.layoutParams =
+        imgEndTool.takeIf { isEndToolAvailable.or(endIconRes != 0) }!!.apply {
+            visibility = VISIBLE
+            layoutParams =
                 LayoutParams(
                     TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,
@@ -180,11 +213,11 @@ class BaseToolBar @JvmOverloads constructor(
                         context.resources.displayMetrics
                     ).toInt(), ViewGroup.LayoutParams.MATCH_PARENT
                 )
-            imgEndTool.imageTintList = ColorStateList.valueOf(endIconTint)
-            imgEndTool.setImageResource(endIconRes)
-            imgEndTool.setOnClickListener(this)
-            addView(imgEndTool)
+            imageTintList = ColorStateList.valueOf(endIconTint)
+            setImageResource(endIconRes)
+            setOnClickListener(this@BaseToolBar)
         }
+        addView(imgEndTool)
 
         setMeasuredDimension(widgetWidth, widgetHeight)
     }
@@ -208,6 +241,38 @@ class BaseToolBar @JvmOverloads constructor(
 
     private fun getColor(@ColorRes colorRes: Int): Int {
         return context.getColor(colorRes)
+    }
+
+    override fun applySkin(pairList: List<SkinPair>) {
+        for ((attrName, resId) in pairList) {
+            when (attrName) {
+                "isEndToolAvailable" -> {
+                    isEndToolAvailable = SkinResources.instance.getBoolean(resId)
+                }
+                "backIconRes" -> {
+
+                }
+                "titleText" -> {
+
+                }
+                "titleTextSize" -> {
+                }
+                "titleGravity" -> {
+                }
+                "titleTextColor" -> {
+
+                }
+                "titlePaddingHorizontal" -> {
+
+                }
+                "endIconRes" -> {
+
+                }
+                "endIconTint" -> {
+
+                }
+            }
+        }
     }
 
 }

@@ -6,7 +6,6 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.TypedValue
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -15,6 +14,9 @@ import androidx.core.view.marginEnd
 import androidx.core.view.marginStart
 import androidx.core.view.marginTop
 import com.devmeng.baselib.R
+import com.devmeng.baselib.skin.SkinWidgetSupport
+import com.devmeng.baselib.skin.entity.SkinPair
+import com.devmeng.baselib.skin.utils.SkinResources
 import com.devmeng.baselib.utils.Logger
 
 /**
@@ -32,6 +34,7 @@ import com.devmeng.baselib.utils.Logger
  * bottomLeftRadius: 左下圆角半径
  * bottomRightRadius: 右下圆角半径
  * backRes: 设置背景图片资源 ID（后期更新）
+ * backColor: 圆角背景颜色
  * borderColor: 边框颜色
  * borderWidth: 边框宽度
  */
@@ -40,7 +43,21 @@ class CornerShadowLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) {
+) : ConstraintLayout(context, attrs, defStyleAttr), SkinWidgetSupport {
+
+    override val attrsList: List<String> = listOf(
+        "shadeColor",
+        "shadeRadius",
+        "allCornerRadius",
+        "topLeftRadius",
+        "topRightRadius",
+        "bottomLeftRadius",
+        "bottomRightRadius",
+        "backRes",
+        "backColor",
+        "borderColor",
+        "borderWidth",
+    )
 
     private var widthMode: Int = 0
     private var heightMode: Int = 0
@@ -54,15 +71,8 @@ class CornerShadowLayout @JvmOverloads constructor(
     private var paddingVertical: Int = 0
     private var paddingHorizontal: Int = 0
     private var borderWidth: Float = 0F
-    var shadowRadius: Float = 0F
-    var allCornerRadius: Float = 0F
-        set(value) {
-            field = value
-            topLeftRadius = field
-            topRightRadius = field
-            bottomLeftRadius = field
-            bottomRightRadius = field
-        }
+    private var shadeRadius: Float = 0F
+    private var allCornerRadius: Float = 0F
     private var topLeftRadius: Float = 0F
     private var topRightRadius: Float = 0F
     private var bottomLeftRadius: Float = 0F
@@ -70,7 +80,7 @@ class CornerShadowLayout @JvmOverloads constructor(
     private var backRes: Int = 0
     private var borderColor: Int = R.color.color_black_333
     private var backColor: Int = R.color.color_black_333
-    private var shadowColor: Int = R.color.color_trans_30
+    private var shadeColor: Int = R.color.black
 
     //画笔
     private var cornerBackPaint: Paint? = null
@@ -79,6 +89,7 @@ class CornerShadowLayout @JvmOverloads constructor(
     init {
         val typedArray =
             context.obtainStyledAttributes(attrs, R.styleable.CornerShadowLayout)
+
         with(typedArray) {
 
             //内边距
@@ -113,11 +124,11 @@ class CornerShadowLayout @JvmOverloads constructor(
             )
 
             //布局阴影相关
-            shadowRadius = getDimension(
+            shadeRadius = getDimension(
                 R.styleable.CornerShadowLayout_shadeRadius,
                 0F
             )
-            shadowColor =
+            shadeColor =
                 getColor(
                     R.styleable.CornerShadowLayout_shadeColor,
                     0
@@ -164,10 +175,10 @@ class CornerShadowLayout @JvmOverloads constructor(
             color = backColor
             style = Paint.Style.FILL_AND_STROKE
             setShadowLayer(
-                shadowRadius,
+                shadeRadius,
                 0F,
                 0F,
-                shadowColor
+                shadeColor
             )
         }
 
@@ -208,8 +219,8 @@ class CornerShadowLayout @JvmOverloads constructor(
         heightMode = MeasureSpec.getMode(heightMeasureSpec)
         widthSize = MeasureSpec.getSize(widthMeasureSpec)
         heightSize = MeasureSpec.getSize(heightMeasureSpec)
-        val widthOffset = widthOffsetConfig(shadowRadius.toInt() * 2)
-        val heightOffset = heightOffsetConfig(shadowRadius.toInt() * 2)
+        val widthOffset = widthOffsetConfig(shadeRadius.toInt() * 2)
+        val heightOffset = heightOffsetConfig(shadeRadius.toInt() * 2)
 
         when (widthMode) {
             MeasureSpec.EXACTLY -> {
@@ -218,13 +229,13 @@ class CornerShadowLayout @JvmOverloads constructor(
             }
             MeasureSpec.AT_MOST -> {
                 mWidth =
-                    (measuredWidth + shadowRadius.toInt() * 2)
+                    (measuredWidth + shadeRadius.toInt() * 2)
                         .coerceAtMost(resources.displayMetrics.widthPixels) + widthOffset
                 mHeight = calcHeight() + heightOffset
             }
             else -> {
                 mWidth =
-                    (measuredWidth + shadowRadius.toInt() * 2)
+                    (measuredWidth + shadeRadius.toInt() * 2)
                         .coerceAtMost(resources.displayMetrics.widthPixels) + widthOffset
                 mHeight = calcHeight() + heightOffset
             }
@@ -238,7 +249,7 @@ class CornerShadowLayout @JvmOverloads constructor(
         val offset =
             TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_PX,
-                shadowRadius,
+                shadeRadius,
                 resources.displayMetrics
             ).toInt() * 2
         val widthOffset = widthOffsetConfig(offset)
@@ -284,15 +295,11 @@ class CornerShadowLayout @JvmOverloads constructor(
 
     }
 
-    override fun setBackground(background: Drawable?) {
-        super.setBackground(background)
-    }
-
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         with(canvas!!) {
-            val offset = (borderWidth + shadowRadius)
+            val offset = (borderWidth + shadeRadius)
             val bgRectF = RectF(
                 offset,
                 offset,
@@ -354,7 +361,7 @@ class CornerShadowLayout @JvmOverloads constructor(
         if (heightMode == MeasureSpec.EXACTLY) {
             heightSize
         } else {
-            (measuredHeight + shadowRadius.toInt() * 2).coerceAtMost(heightSize)
+            (measuredHeight + shadeRadius.toInt() * 2).coerceAtMost(heightSize)
         }
 
     private fun widthPadding() = when {
@@ -400,6 +407,51 @@ class CornerShadowLayout @JvmOverloads constructor(
     fun release() {
         //todo other
         setLayerType(LAYER_TYPE_NONE, null)
+    }
+
+    /**
+     * 应用自定义 View 的皮肤包
+     */
+    override fun applySkin(pairList: List<SkinPair>) {
+        for ((attrName, resId) in pairList) {
+            Logger.d("attrName -> [$attrName] resId -> [$resId]")
+            when (attrName) {
+                "shadeColor" -> {
+                    shadeColor = SkinResources.instance.getColor(resId)
+                }
+                "shadeRadius" -> shadeRadius = SkinResources.instance.getDimension(resId)
+                "allCornerRadius" -> {
+                    allCornerRadius = SkinResources.instance.getDimension(resId)
+                }
+                "topLeftRadius" -> {
+                    topLeftRadius = SkinResources.instance.getDimension(resId)
+                }
+                "topRightRadius" -> {
+                    topRightRadius = SkinResources.instance.getDimension(resId)
+                }
+                "bottomLeftRadius" -> {
+                    bottomLeftRadius = SkinResources.instance.getDimension(resId)
+                }
+                "bottomRightRadius" -> {
+                    bottomRightRadius = SkinResources.instance.getDimension(resId)
+                }
+                "backRes" -> {
+                    TODO()
+                }
+                "backColor" -> {
+                    backColor = SkinResources.instance.getColor(resId)
+                }
+                "borderColor" -> {
+                    borderColor = SkinResources.instance.getColor(resId)
+                }
+                "borderWidth" -> {
+                    borderWidth = SkinResources.instance.getDimension(resId)
+                }
+            }
+        }
+        //重新为画笔的阴影上色及量宽
+        initConfig()
+        invalidate()
     }
 
 }

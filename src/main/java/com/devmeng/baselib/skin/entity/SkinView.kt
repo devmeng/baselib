@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.core.widget.TextViewCompat
+import com.devmeng.baselib.skin.SkinWidgetSupport
 import com.devmeng.baselib.skin.utils.SkinResources.Companion.init
 
 /**
@@ -43,6 +44,7 @@ data class SkinView(var view: View, var pairList: List<SkinPair>) {
     fun applySkin(typeface: Typeface) {
         //全局更改字体
         applyTypeface(typeface)
+        applyWidgetSkin(pairList)
         for ((attrName, resId) in pairList) {
             val skinResources = init(view.context.applicationContext)
             var top: Drawable? = null
@@ -99,6 +101,12 @@ data class SkinView(var view: View, var pairList: List<SkinPair>) {
     private fun applyTypeface(skinTypeface: Typeface) {
         view.takeIf { view is TextView }.apply {
             (view as? TextView)?.typeface = skinTypeface
+        }
+    }
+
+    private fun applyWidgetSkin(pairList: List<SkinPair>) {
+        view.takeIf { view is SkinWidgetSupport }.apply {
+            (view as? SkinWidgetSupport)?.applySkin(pairList)
         }
     }
 

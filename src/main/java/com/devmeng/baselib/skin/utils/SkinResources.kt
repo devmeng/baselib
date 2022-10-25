@@ -34,13 +34,28 @@ class SkinResources private constructor() {
 
     }
 
+    fun getDimension(dimens: Int): Float {
+        val skinRes = getIdentifier(dimens)
+        if (isDefaultSkin.or(skinRes == 0)) {
+            return context.resources.getDimension(dimens)
+        }
+        return skinResources!!.getDimension(skinRes)
+    }
+
     fun getColor(color: Int): Int {
         val skinRes = getIdentifier(color)
-        skinRes.takeIf { isDefaultSkin }?.apply { context.getColor(color) }
         if (isDefaultSkin.or(skinRes == 0)) {
             return context.getColor(color)
         }
         return skinResources!!.getColor(skinRes, null)
+    }
+
+    fun getColorId(color: Int): Int {
+        val skinRes = getIdentifier(color)
+        if (isDefaultSkin.or(skinRes == 0)) {
+            return color
+        }
+        return skinRes
     }
 
     fun getColorStateList(color: Int): ColorStateList? {
@@ -60,6 +75,15 @@ class SkinResources private constructor() {
         return skinResources!!.getDrawable(skinRes, null)
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
+    fun getDrawableId(resId: Int): Int {
+        val skinRes = getIdentifier(resId)
+        if (isDefaultSkin.or(skinRes == 0)) {
+            return resId
+        }
+        return skinRes
+    }
+
     fun getBackground(resId: Int): Any? {
         val resTypeName = context.resources.getResourceTypeName(resId)
 
@@ -68,6 +92,14 @@ class SkinResources private constructor() {
         } else {
             getDrawable(resId)
         }
+    }
+
+    fun getBoolean(resId: Int): Boolean {
+        val skinRes = getIdentifier(resId)
+        if (isDefaultSkin.or(skinRes == 0)) {
+            return context.resources.getBoolean(resId)
+        }
+        return skinResources!!.getBoolean(skinRes)
     }
 
     fun getTypeface(typefaceId: Int): Typeface {
@@ -128,8 +160,8 @@ class SkinResources private constructor() {
         //例如: @drawable/icon -> icon
         val entryName = context.resources.getResourceEntryName(resId)
 //        Logger.d("resName -> $resName")
-//        Logger.d("typeName -> $typeName")
-//        Logger.d("entryName -> $entryName")
+        Logger.d("typeName -> $typeName")
+        Logger.d("entryName -> $entryName")
 //        Logger.d("skinPkgName -> $skinPkgName")
         val skinIdentifier = skinResources?.getIdentifier(entryName, typeName, skinPkgName)
         Logger.d("skinIdentifier -> $skinIdentifier")
