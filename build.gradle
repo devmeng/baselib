@@ -1,10 +1,8 @@
 plugins {
     id 'org.jetbrains.kotlin.android'
     id "com.android.library"
-
+    id 'maven-publish'
 }
-apply plugin: "maven-publish"
-
 //apply from: 'tinker-support.gradle'
 
 android {
@@ -54,10 +52,24 @@ afterEvaluate {
                 groupId = 'com.devmeng.baselib'
                 version = '1.0.3'
                 artifactId = 'baselib'
+                // 必须有这个 否则不会上传AAR包
+                afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
+            }
+        }
+        //jitpack推送授权
+        repositories {
+            maven {
+                name('jitpack')
+                url "https://jitpack.io"
+                credentials {
+                    username "devmeng"
+                    password "mhs76502"
+                }
             }
         }
     }
 }
+
 
 
 dependencies {
