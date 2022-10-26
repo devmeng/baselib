@@ -50,10 +50,10 @@ afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
+                from components.release
                 groupId = 'com.devmeng.baselib'
                 version = '1.0.3'
                 artifactId = 'baselib'
-                from components.release
             }
         }
     }
