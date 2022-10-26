@@ -1,5 +1,5 @@
 plugins {
-    id "kotlin-android"
+    id 'org.jetbrains.kotlin.android'
 
     id "maven-publish"
 }
@@ -54,21 +54,22 @@ android {
         viewBinding = true
     }
 }
+group = 'com.devmeng.baselib'
+version = '1.0.3'
 
-subprojects {
+afterEvaluate {
     publishing {
         publications {
-            maven(MavenPublication) {
+            release(MavenPublication) {
                 groupId = 'com.devmeng.baselib'
                 version = '1.0.3'
-                afterEvaluate{
-                    artifactId = 'devmeng'
-                }
-                from components.java
+                artifactId = 'baselib'
+                from components.release
             }
         }
     }
 }
+
 
 dependencies {
 
