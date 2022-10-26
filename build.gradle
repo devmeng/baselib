@@ -1,5 +1,6 @@
 plugins {
     id 'org.jetbrains.kotlin.android'
+    id "maven-publish"
 }
 if (isBaseApp.toBoolean()) {
     apply plugin: "com.android.application"
@@ -49,6 +50,20 @@ android {
     }
     buildFeatures {
         viewBinding = true
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications{
+            release(MavenPublication){
+                from components.release
+
+                groupId = "com.devmeng.baselib"
+                artifactId = "devmeng"
+                version = "1.0"
+            }
+        }
     }
 }
 
