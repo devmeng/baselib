@@ -1,5 +1,6 @@
 plugins {
-    id 'org.jetbrains.kotlin.android'
+    id "kotlin-android"
+
     id "maven-publish"
 }
 if (isBaseApp.toBoolean()) {
