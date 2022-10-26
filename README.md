@@ -1,7 +1,5 @@
 # 项目功能
 
-[TOC]
-
 [![](https://jitpack.io/v/devmeng/baselib.svg)](https://jitpack.io/#devmeng/baselib)
 
 ### 开发前的必需配置
