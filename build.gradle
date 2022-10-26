@@ -3,11 +3,7 @@ plugins {
 
     id "maven-publish"
 }
-if (isBaseApp.toBoolean()) {
-    apply plugin: "com.android.application"
-} else {
-    apply plugin: "com.android.library"
-}
+apply plugin: "com.android.library"
 
 //apply from: 'tinker-support.gradle'
 
@@ -15,9 +11,6 @@ android {
     compileSdk rootProject.ext.android["compileSdkVersion"]
 
     defaultConfig {
-        if (isBaseApp.toBoolean()) {
-            applicationId "com.study.KotlinStudyProject"
-        }
         minSdk rootProject.ext.android["minSdkVersion"]
         targetSdk rootProject.ext.android["targetSdkVersion"]
 
@@ -28,11 +21,7 @@ android {
 
     sourceSets {
         main {
-            if (isBaseApp.toBoolean()) {
-                manifest.srcFile "src/main/test/AndroidManifest.xml"
-            } else {
-                manifest.srcFile "src/main/AndroidManifest.xml"
-            }
+            manifest.srcFile "src/main/AndroidManifest.xml"
         }
     }
 
@@ -93,12 +82,7 @@ import org.aspectj.tools.ajc.Main
 
 final def log = project.logger
 
-final def variants
-if (isBaseApp.toBoolean()) {
-    variants = project.android.applicationVariants
-} else {
-    variants = project.android.libraryVariants
-}
+final def variants = project.android.libraryVariants
 
 variants.all { variant ->
 
