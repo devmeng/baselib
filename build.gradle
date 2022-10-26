@@ -1,9 +1,9 @@
 plugins {
     id 'org.jetbrains.kotlin.android'
+    id "com.android.library"
 
-    id "maven-publish"
 }
-apply plugin: "com.android.library"
+apply plugin: "maven-publish"
 
 //apply from: 'tinker-support.gradle'
 
