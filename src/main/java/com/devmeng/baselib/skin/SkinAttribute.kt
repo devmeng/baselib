@@ -65,10 +65,10 @@ class SkinAttribute(var skinTypeface: Typeface) {
         val skinPairList = mutableListOf<SkinPair>()
 
         //添加自定义 View 使用的自定义属性
-        view.takeIf { view is SkinWidgetSupport }.apply {
+        view.takeIf { view is SkinWidgetSupport }.let{
             (view as? SkinWidgetSupport)?.apply {
                 widgetAttrList = attrsList
-                attributeList.addAll(attrsList)
+                attributeList.addAll(widgetAttrList)
             }
         }
 
