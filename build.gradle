@@ -47,13 +47,13 @@ version = '1.0.3'
 afterEvaluate {
     publishing {
         publications {
-            release(MavenPublication) {
+            maven(MavenPublication) {
                 from components.release
-                groupId = 'com.devmeng.baselib'
-                version = '1.0.3'
+                groupId = 'com.github.devmeng'
+                version = '1.0.1'
                 artifactId = 'baselib'
                 // 必须有这个 否则不会上传AAR包
-                afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
+//                afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
             }
         }
         //jitpack推送授权
