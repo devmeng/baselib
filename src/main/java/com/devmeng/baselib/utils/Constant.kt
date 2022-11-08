@@ -14,6 +14,14 @@ const val SPACE: String = " "
 
 const val DOT: String = "."
 
+const val LEFT_BIAS = "/"
+
+const val RIGHT_BIAS = "\\"
+
+const val HTTP: String = "http"
+
+
+
 object PATH {
     const val PAGE = "PAGE"
     const val ARTICLE_ID = "article_id"

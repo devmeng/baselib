@@ -7,6 +7,7 @@ import android.widget.TextView
 import com.devmeng.baselib.skin.entity.SkinPair
 import com.devmeng.baselib.skin.entity.SkinView
 import com.devmeng.baselib.skin.utils.SkinThemeUtils
+import com.devmeng.baselib.utils.Logger
 
 /**
  * Created by Richard
@@ -18,38 +19,42 @@ import com.devmeng.baselib.skin.utils.SkinThemeUtils
  * @see SkinView.applySkin 需在该方法的 switch 语句增加 case
  * @param skinTypeface 对应皮肤包中的特定字体
  */
-class SkinAttribute(var skinTypeface: Typeface) {
+class SkinAttribute(var skinTypeface: Typeface? = null) {
 
-    val attributeList = mutableListOf<String>()
-    private var widgetAttrList: List<String> = listOf()
-    private val skinViews = mutableListOf<SkinView>()
+    companion object {
+        val instance by lazy {
+            SkinAttribute()
+        }
+    }
 
-    init {
-        attributeList.add("background")
-        attributeList.add("backgroundTint")
-        attributeList.add("src")
-        attributeList.add("textColor")
-        attributeList.add("tint")
-        attributeList.add("drawableLeft")
-        attributeList.add("drawableStart")
-        attributeList.add("drawableRight")
-        attributeList.add("drawableEnd")
-        attributeList.add("drawableTop")
-        attributeList.add("drawableBottom")
-        attributeList.add("drawableLeftCompat")
-        attributeList.add("drawableStartCompat")
-        attributeList.add("drawableRightCompat")
-        attributeList.add("drawableEndCompat")
-        attributeList.add("drawableTopCompat")
-        attributeList.add("drawableBottomCompat")
-        attributeList.add("drawableTint")
+    val attributeList = mutableListOf(
+        "background",
+        "backgroundTint",
+        "src",
+        "textColor",
+        "tint",
+        "drawableLeft",
+        "drawableStart",
+        "drawableRight",
+        "drawableEnd",
+        "drawableTop",
+        "drawableBottom",
+        "drawableLeftCompat",
+        "drawableStartCompat",
+        "drawableRightCompat",
+        "drawableEndCompat",
+        "drawableTopCompat",
+        "drawableBottomCompat",
+        "drawableTint",
 
         //需局部更换字体时添加属性
-        attributeList.add("skinTypeface")
+        "skinTypeface"
         /** 注意: attributeList 在增加属性个体时需要对
         #SkinView 中的 applySkin() 方法的 switch 增加 case
          */
-    }
+    )
+    private var widgetAttrList: List<String> = listOf()
+    private val skinViews = mutableListOf<SkinView>()
 
     /**
      * 获取并缓存 view 中换肤所需的属性
@@ -65,8 +70,8 @@ class SkinAttribute(var skinTypeface: Typeface) {
         val skinPairList = mutableListOf<SkinPair>()
 
         //添加自定义 View 使用的自定义属性
-        view.takeIf { view is SkinWidgetSupport }.let{
-            (view as? SkinWidgetSupport)?.apply {
+        view.takeIf { view is SkinWidgetSupport }.let {
+            (it as? SkinWidgetSupport)?.apply {
                 widgetAttrList = attrsList
                 attributeList.addAll(widgetAttrList)
             }
@@ -119,6 +124,27 @@ class SkinAttribute(var skinTypeface: Typeface) {
         for (skinView in skinViews) {
             skinView.applySkin(skinTypeface)
         }
+    }
+
+    fun reflectSkinPair(view: View, attrs: List<String>): MutableList<SkinPair> {
+        val skinPairList = mutableListOf<SkinPair>()
+        var attrName: String
+        var value: Int
+        try {
+            val viewClass = view.javaClass
+            attrs.forEach {
+                val attrField = viewClass.getDeclaredField(it)
+                attrField.isAccessible = true
+                attrName = attrField.name
+                if (attrField.get(view) is Int) {
+                    value = attrField.get(view) as Int
+                    skinPairList.add(SkinPair(attrName, value))
+                }
+            }
+        } catch (e: Exception) {
+            Logger.e(e.stackTraceToString())
+        }
+        return skinPairList
     }
 
 

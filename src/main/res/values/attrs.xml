@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="skinTypeface" format="string" />
+
+    <declare-styleable name="LoadingView">
+
+        <attr name="loadAnimUrl" format="string" />
+        <attr name="loadAnimFolderName" format="string" />
+        <attr name="loadAnimIsHadImage" format="boolean" />
+        <attr name="loadText" format="string" />
+        <attr name="loadTextSize" format="dimension" />
+        <attr name="loadTextColor" format="reference|color" />
+        <attr name="loadBackColor" format="reference|color" />
+        <attr name="loadBackBorderColor" format="reference|color" />
+        <attr name="loadBackBorderWidth" format="dimension" />
+    </declare-styleable>
+
     <declare-styleable name="ChatMessageItem">
 
     </declare-styleable>
@@ -96,4 +110,27 @@
         <attr name="humpIconSize" format="dimension" />
         <attr name="humpAngle" format="integer" />
     </declare-styleable>
+    <declare-styleable name="SkinAttribute">
+        <attr name="background" />
+        <attr name="backgroundTint" />
+        <attr name="android:src" />
+        <attr name="android:textColor" />
+        <attr name="tint" />
+        <attr name="android:drawableLeft" />
+        <attr name="android:drawableStart" />
+        <attr name="android:drawableRight" />
+        <attr name="android:drawableEnd" />
+        <attr name="android:drawableTop" />
+        <attr name="android:drawableBottom" />
+        <attr name="drawableLeftCompat" />
+        <attr name="drawableStartCompat" />
+        <attr name="drawableRightCompat" />
+        <attr name="drawableEndCompat" />
+        <attr name="drawableTopCompat" />
+        <attr name="drawableBottomCompat" />
+        <attr name="android:drawableTint" />
+        <!--        需局部更换字体时添加属性-->
+        <attr name="skinTypeface" />
+    </declare-styleable>
+    <attr name="defaultStyle" format="reference" />
 </resources>

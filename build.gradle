@@ -2,12 +2,10 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 
     id "maven-publish"
+
 }
-if (isBaseApp.toBoolean()) {
-    apply plugin: "com.android.application"
-} else {
-    apply plugin: "com.android.library"
-}
+apply plugin: "com.android.library"
+apply plugin: "aspectj"
 
 //apply from: 'tinker-support.gradle'
 
@@ -15,9 +13,6 @@ android {
     compileSdk rootProject.ext.android["compileSdkVersion"]
 
     defaultConfig {
-        if (isBaseApp.toBoolean()) {
-            applicationId "com.study.KotlinStudyProject"
-        }
         minSdk rootProject.ext.android["minSdkVersion"]
         targetSdk rootProject.ext.android["targetSdkVersion"]
 
@@ -28,11 +23,7 @@ android {
 
     sourceSets {
         main {
-            if (isBaseApp.toBoolean()) {
-                manifest.srcFile "src/main/test/AndroidManifest.xml"
-            } else {
-                manifest.srcFile "src/main/AndroidManifest.xml"
-            }
+            manifest.srcFile "src/main/AndroidManifest.xml"
         }
     }
 
@@ -54,15 +45,13 @@ android {
         viewBinding = true
     }
 }
-group = 'com.devmeng.baselib'
-version = '1.0.3'
 
 afterEvaluate {
     publishing {
         publications {
-            release(MavenPublication) {
-                groupId = 'com.devmeng.baselib'
-                version = '1.0.3'
+            baselib(MavenPublication) {
+                groupId = 'com.devmeng'
+                version = '1.0.1'
                 artifactId = 'baselib'
                 from components.release
             }
@@ -82,94 +71,6 @@ dependencies {
     api rootProject.ext.materialLibs
     api rootProject.ext.networkLibs
     api rootProject.ext.buglyLibs
-
-    api rootProject.ext.aspectJ["aspectjrt"]
-
-}
-
-import org.aspectj.bridge.IMessage
-import org.aspectj.bridge.MessageHandler
-import org.aspectj.tools.ajc.Main
-
-final def log = project.logger
-
-final def variants
-if (isBaseApp.toBoolean()) {
-    variants = project.android.applicationVariants
-} else {
-    variants = project.android.libraryVariants
-}
-
-variants.all { variant ->
-
-    if (!variant.buildType.isDebuggable()) {
-
-        log.debug("Skipping non-debuggable build type '${variant.buildType.name}'.")
-
-        return
-
-    }
-
-    JavaCompile javaCompile = variant.javaCompile
-
-    javaCompile.doLast {
-
-        String[] args = ["-showWeaveInfo",
-
-                         "-1.8",
-
-                         "-inpath", javaCompile.destinationDirectory.toString(),
-
-                         "-aspectpath", javaCompile.classpath.asPath,
-
-                         "-d", javaCompile.destinationDirectory.toString(),
-
-                         "-classpath", javaCompile.classpath.asPath,
-
-                         "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
-
-        log.debug "ajc args: " + Arrays.toString(args)
-
-        MessageHandler handler = new MessageHandler(true)
-
-        new Main().run(args, handler)
-
-        for (IMessage message : handler.getMessages(null, true)) {
-
-            switch (message.getKind()) {
-
-                case IMessage.ABORT:
-
-                case IMessage.ERROR:
-
-                case IMessage.FAIL:
-
-                    log.error message.message, message.thrown
-
-                    break
-
-                case IMessage.WARNING:
-
-                    log.warn message.message, message.thrown
-
-                    break
-
-                case IMessage.INFO:
-
-                    log.info message.message, message.thrown
-
-                    break
-
-                case IMessage.DEBUG:
-
-                    log.debug message.message, message.thrown
-
-                    break
-
-            }
-
-        }
-
-    }
+//    api rootProject.ext.aspectJ["aspectjrt"]
 
 }

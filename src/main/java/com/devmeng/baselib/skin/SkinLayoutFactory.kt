@@ -33,7 +33,7 @@ import java.util.*
  * @param skinTypeface 对应皮肤包中的特定字体
  *
  */
-class SkinLayoutFactory(val activity: Activity, val skinTypeface: Typeface) :
+class SkinLayoutFactory(val activity: Activity, val skinTypeface: Typeface?) :
     LayoutInflater.Factory2,
     Observer {
 
@@ -109,8 +109,10 @@ class SkinLayoutFactory(val activity: Activity, val skinTypeface: Typeface) :
 
     override fun update(o: Observable?, arg: Any?) {
         SkinThemeUtils.updateStatusBarState(activity)
-        val typeface = SkinThemeUtils.getSkinTypeface(activity)
-        skinAttribute.skinTypeface = typeface
+        skinAttribute.skinTypeface?.apply {
+            val typeface = SkinThemeUtils.getSkinTypeface(activity)
+            skinAttribute.skinTypeface = typeface
+        }
         //由 SkinManager 通知并应用皮肤，开始根据属性换肤
         skinAttribute.applySkin()
     }

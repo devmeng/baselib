@@ -8,6 +8,6 @@ import com.devmeng.baselib.skin.entity.SkinPair
  * Version : 1
  */
 interface SkinWidgetSupport {
-    val attrsList: List<String>
+    val attrsList: MutableList<String>
     fun applySkin(pairList: List<SkinPair>)
 }

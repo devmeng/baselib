@@ -3,6 +3,7 @@ package com.devmeng.baselib.skin
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import com.devmeng.baselib.skin.utils.SkinPreference
@@ -20,12 +21,17 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
 
     private val factoryMap: HashMap<Activity, SkinLayoutFactory> = hashMapOf()
 
+    private val isChangeTypeface = false
+
     @SuppressLint("DiscouragedPrivateApi")
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         //防止重启状态栏还原
 //        SkinThemeUtils.updateStatusBarState(activity)
         //加载皮肤包 字体
-        val skinTypeface = SkinThemeUtils.getSkinTypeface(activity)
+        var skinTypeface: Typeface? = null
+        if (isChangeTypeface) {
+            skinTypeface = SkinThemeUtils.getSkinTypeface(activity)
+        }
         val layoutInflater = LayoutInflater.from(activity)
         try {
             //根据源码中 setFactory2 方法需将 mFactorySet 先设置成 false，才可使用

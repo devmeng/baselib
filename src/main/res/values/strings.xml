@@ -26,5 +26,6 @@
     <string name="string_register">注册</string>
     <string name="string_txt_send">发送</string>
     <string name="skin_ttf_chu_chen_ti" />
+    <string name="string_loading">正在加载…</string>
     <bool name="test">true</bool>
 </resources>

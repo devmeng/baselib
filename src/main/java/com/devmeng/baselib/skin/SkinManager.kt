@@ -4,10 +4,20 @@ import android.app.Application
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.content.res.Resources
+import com.devmeng.baselib.net.DataService
+import com.devmeng.baselib.skin.entity.Skin
 import com.devmeng.baselib.skin.utils.SkinPreference
 import com.devmeng.baselib.skin.utils.SkinResources
 import com.devmeng.baselib.utils.EMPTY
 import com.devmeng.baselib.utils.Logger
+import com.devmeng.baselib.utils.md5ForFile
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Request
+import okhttp3.Response
+import okio.IOException
+import java.io.File
+import java.io.FileOutputStream
 import java.util.*
 
 /**
@@ -24,7 +34,7 @@ import java.util.*
  * 3.通知观察者
  *
  */
-class SkinManager private constructor() : Observable(){
+class SkinManager private constructor() : Observable() {
 
     private lateinit var application: Application
 
@@ -121,6 +131,57 @@ class SkinManager private constructor() : Observable(){
         //通知观察者并在观察者的 update 方法中进行皮肤的应用
         setChanged()
         notifyObservers()
+    }
+
+    /**
+     * 加载网络皮肤
+     * @param skin 皮肤实体类
+     */
+    fun loadSkin(skin: Skin) {
+        val skins = File(application.applicationContext.filesDir, "skins")
+        if (skins.exists().and(skins.isFile)) {
+            skins.delete()
+        }
+        skins.mkdir()
+        val skinFile = skin.getSkinFile(skins)
+        if (skinFile.exists()) {
+            //有就应用
+//            loadSkin(skin.path)
+            Logger.d("skin 文件存在")
+            Logger.d("模拟 load skin")
+            return
+        }
+        val tempFile = File(skinFile.parentFile, "${skin.name}.temp")
+        //下载皮肤包
+        val request = Request.Builder().url(skin.skinUrl).build()
+        DataService.getOkHttpClient().newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val bs = response.body.byteStream()
+                val fileOut = FileOutputStream(tempFile)
+                try {
+                    var length: Int
+                    val bytes = ByteArray(1024)
+                    while (bs.read(bytes).also { length = it } != -1) {
+                        fileOut.write(bytes, 0, length)
+                    }
+                    if (skin.md5 == md5ForFile(tempFile)) {
+                        Logger.d("相同")
+                        tempFile.renameTo(skinFile)
+                    }
+                    Logger.d("模拟 load skin")
+//                        loadSkin(skin.path)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    fileOut.close()
+                    bs.close()
+                }
+            }
+        })
     }
 
 }

@@ -49,7 +49,7 @@ class BaseToolBar @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayoutCompat(context, attrs, defStyleAttr), View.OnClickListener, SkinWidgetSupport {
 
-    override val attrsList: List<String> = listOf(
+    override val attrsList: MutableList<String> = mutableListOf(
         "isEndToolAvailable",
         "backIconRes",
         "titleText",

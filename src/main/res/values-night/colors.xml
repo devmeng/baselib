@@ -30,6 +30,6 @@
 
     <color name="testCSL_shadow_color">#FF4E4E</color>
 
-    <color name="load_view_back_color">#333333</color>
-    <color name="load_view_tv_color">#00ff00</color>
+    <color name="load_view_back_color">#333</color>
+    <color name="load_view_tv_color">#FFF</color>
 </resources>

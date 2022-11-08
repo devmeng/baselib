@@ -32,7 +32,8 @@ class DataService private constructor() {
                 .create()
         }
 
-        private fun getOkHttpClient(): OkHttpClient {
+        @JvmStatic
+        fun getOkHttpClient(): OkHttpClient {
             val interceptor = HttpLoggingInterceptor().setLevel(
                 if (BuildConfig.DEBUG) {
                     HttpLoggingInterceptor.Level.BODY

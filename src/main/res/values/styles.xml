@@ -13,7 +13,7 @@
         <!--    appbar background color    -->
         <item name="colorPrimary">@color/color_black_333</item>
         <!--    status bar background color    -->
-        <item name="colorPrimaryVariant">@color/color_black_202020</item>
+        <item name="colorPrimaryDark">@color/color_black_202020</item>
 
         <item name="android:background">@color/color_black_333</item>
     </style>

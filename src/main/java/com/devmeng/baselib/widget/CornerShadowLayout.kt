@@ -9,10 +9,6 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.util.TypedValue
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginBottom
-import androidx.core.view.marginEnd
-import androidx.core.view.marginStart
-import androidx.core.view.marginTop
 import com.devmeng.baselib.R
 import com.devmeng.baselib.skin.SkinWidgetSupport
 import com.devmeng.baselib.skin.entity.SkinPair
@@ -42,10 +38,10 @@ import com.devmeng.baselib.utils.Logger
 class CornerShadowLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = R.attr.defaultStyle
 ) : ConstraintLayout(context, attrs, defStyleAttr), SkinWidgetSupport {
 
-    override val attrsList: List<String> = listOf(
+    override val attrsList: MutableList<String> = mutableListOf(
         "shadeColor",
         "shadeRadius",
         "allCornerRadius",
@@ -63,28 +59,28 @@ class CornerShadowLayout @JvmOverloads constructor(
     private var heightMode: Int = 0
     private var widthSize: Int = 0
     private var heightSize: Int = 0
-    private var mWidth: Int = 0
-    private var mHeight: Int = 0
+    var mWidth: Int = 0
+    var mHeight: Int = 0
 
     //自定义属性
     private var padding: Int = 0
     private var paddingVertical: Int = 0
     private var paddingHorizontal: Int = 0
-    private var borderWidth: Float = 0F
-    private var shadeRadius: Float = 0F
-    private var allCornerRadius: Float = 0F
-    private var topLeftRadius: Float = 0F
-    private var topRightRadius: Float = 0F
-    private var bottomLeftRadius: Float = 0F
-    private var bottomRightRadius: Float = 0F
-    private var backRes: Int = 0
-    private var borderColor: Int = R.color.color_black_333
-    private var backColor: Int = R.color.color_black_333
-    private var shadeColor: Int = R.color.black
+    var borderWidth: Float = 0F
+    var shadeRadius: Float = 0F
+    var allCornerRadius: Float = 0F
+    var topLeftRadius: Float = 0F
+    var topRightRadius: Float = 0F
+    var bottomLeftRadius: Float = 0F
+    var bottomRightRadius: Float = 0F
+    var backRes: Int = 0
+    var borderColor: Int = R.color.color_black_333
+    var backColor: Int = R.color.color_black_333
+    var shadeColor: Int = R.color.black
 
     //画笔
-    private var cornerBackPaint: Paint? = null
-    private var borderPaint: Paint? = null
+    private val cornerBackPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private var borderPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
         val typedArray =
@@ -157,21 +153,24 @@ class CornerShadowLayout @JvmOverloads constructor(
 
             recycle()
         }
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
         initConfig()
-        setWillNotDraw(false)
     }
 
     @SuppressLint("ResourceAsColor")
-    private fun initConfig() {
-        if (allCornerRadius != 0F) {
+    fun initConfig() {
+        setWillNotDraw(false)
+        if (allCornerRadius > 0F) {
             topLeftRadius = allCornerRadius
             topRightRadius = allCornerRadius
             bottomLeftRadius = allCornerRadius
             bottomRightRadius = allCornerRadius
         }
         //背景画笔
-        cornerBackPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        with(cornerBackPaint!!) {
+        cornerBackPaint.apply {
             color = backColor
             style = Paint.Style.FILL_AND_STROKE
             setShadowLayer(
@@ -183,8 +182,7 @@ class CornerShadowLayout @JvmOverloads constructor(
         }
 
         //边框画笔
-        borderPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        with(borderPaint!!) {
+        borderPaint.apply {
             color = borderColor
             style = Paint.Style.STROKE
             strokeWidth = borderWidth
@@ -198,6 +196,7 @@ class CornerShadowLayout @JvmOverloads constructor(
             return
         }
         setBackgroundResource(backRes)
+        Logger.d("天哪 initConfig 了")
     }
 
     private fun getRadiusArray(): FloatArray {
@@ -241,6 +240,7 @@ class CornerShadowLayout @JvmOverloads constructor(
             }
         }
         setMeasuredDimension(mWidth, mHeight)
+        Logger.d("天哪 onMeasure 了")
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -308,7 +308,7 @@ class CornerShadowLayout @JvmOverloads constructor(
             )
             val bgPath = Path()
             bgPath.addRoundRect(bgRectF, getRadiusArray(), Path.Direction.CW)
-            drawPath(bgPath, cornerBackPaint!!)
+            drawPath(bgPath, cornerBackPaint)
 
             val borderRectF = RectF(
                 offset,
@@ -319,9 +319,10 @@ class CornerShadowLayout @JvmOverloads constructor(
 
             val borderPath = Path()
             borderPath.addRoundRect(borderRectF, getRadiusArray(), Path.Direction.CW)
-            drawPath(borderPath, borderPaint!!)
+            drawPath(borderPath, borderPaint)
 
         }
+        Logger.d("天哪 onDraw 了")
     }
 
     private fun widthOffsetConfig(offset: Int): Int {
@@ -363,40 +364,6 @@ class CornerShadowLayout @JvmOverloads constructor(
         } else {
             (measuredHeight + shadeRadius.toInt() * 2).coerceAtMost(heightSize)
         }
-
-    private fun widthPadding() = when {
-        padding != 0 -> padding * 2
-        paddingHorizontal != 0 -> paddingHorizontal * 2
-        else -> 0
-    }
-
-    private fun heightPadding() = when {
-        padding != 0 -> padding * 2
-        paddingVertical != 0 -> paddingVertical * 2
-        else -> 0
-    }
-
-    private fun marginHorizontalOffset(): Int {
-        var marginHorizontalOffset = 0
-        if (marginStart != 0) {
-            marginHorizontalOffset += marginStart
-        }
-        if (marginEnd != 0) {
-            marginHorizontalOffset += marginEnd
-        }
-        return marginHorizontalOffset
-    }
-
-    private fun marginVerticalOffset(): Int {
-        var marginVerticalOffset = 0
-        if (marginTop != 0) {
-            marginVerticalOffset += marginTop
-        }
-        if (marginBottom != 0) {
-            marginVerticalOffset += marginBottom
-        }
-        return marginVerticalOffset
-    }
 
     private fun getColor(color: Int) = context.getColor(color)
 
@@ -450,8 +417,12 @@ class CornerShadowLayout @JvmOverloads constructor(
             }
         }
         //重新为画笔的阴影上色及量宽
+        update()
+    }
+
+    fun update() {
         initConfig()
-        invalidate()
+        postInvalidate()
     }
 
 }

@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.widget.TextViewCompat
 import com.devmeng.baselib.skin.SkinWidgetSupport
 import com.devmeng.baselib.skin.utils.SkinResources.Companion.init
+import com.devmeng.baselib.widget.LoadingView
 
 /**
  * Created by Richard
@@ -41,9 +42,11 @@ data class SkinView(var view: View, var pairList: List<SkinPair>) {
      * 则需要在 switch 语句中增加方案 case 并从 SkinResources 中获取对应资源
      * @param typeface 用于对皮肤包中定义特定字体的切换
      */
-    fun applySkin(typeface: Typeface) {
+    fun applySkin(typeface: Typeface?) {
         //全局更改字体
-        applyTypeface(typeface)
+        typeface?.apply {
+            applyTypeface(this)
+        }
         applyWidgetSkin(pairList)
         for ((attrName, resId) in pairList) {
             val skinResources = init(view.context.applicationContext)
@@ -64,7 +67,7 @@ data class SkinView(var view: View, var pairList: List<SkinPair>) {
                     val colorStateList = skinResources.getColorStateList(resId)
                     view.backgroundTintList = colorStateList
                 }
-                "src" -> {
+                "android:src" -> {
                     val drawable = skinResources.getDrawable(resId)
                     (view as ImageView).setImageDrawable(drawable)
                 }
@@ -107,6 +110,12 @@ data class SkinView(var view: View, var pairList: List<SkinPair>) {
     private fun applyWidgetSkin(pairList: List<SkinPair>) {
         view.takeIf { view is SkinWidgetSupport }.apply {
             (view as? SkinWidgetSupport)?.applySkin(pairList)
+        }
+    }
+
+    private fun applyLoadingViewSkin(pairList: List<SkinPair>){
+        view.takeIf { view is LoadingView }.apply {
+            (view as? LoadingView)?.applySkin()
         }
     }
 

@@ -48,8 +48,7 @@ class BottomTabIcon @JvmOverloads constructor(
 
     fun setDynamicIcon(targetDirName: String) {
         lottieIconBuilder!!
-            .folderName(targetDirName)
-            .jsonAssetsName()
+            .lottieAssetAnim(targetDirName, false)
     }
 
     fun setIconTint() {

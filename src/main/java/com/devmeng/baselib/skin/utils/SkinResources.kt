@@ -122,7 +122,7 @@ class SkinResources private constructor() {
 
     private fun getSkinString(skinTypeFaceId: Int): String {
         if (skinTypeFaceId == 0) {
-            throw Resources.NotFoundException("请在 theme.xml 中配置 skinTypeface 属性")
+            throw Resources.NotFoundException("请在 attrs.xml 中配置 skinTypeface 属性")
         }
         if (isDefaultSkin) {
             return context.resources.getString(skinTypeFaceId)
@@ -131,7 +131,7 @@ class SkinResources private constructor() {
         if (resId == 0) {
             return context.resources.getString(skinTypeFaceId)
         }
-        return skinResources!!.getString(resId)
+        return skinResources?.getString(resId)!!
     }
 
     /**
