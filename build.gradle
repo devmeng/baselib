@@ -1,10 +1,8 @@
 plugins {
     id 'org.jetbrains.kotlin.android'
-
-    id "maven-publish"
-
+    id "com.android.library"
+    id 'maven-publish'
 }
-apply plugin: "com.android.library"
 apply plugin: "aspectj"
 
 //apply from: 'tinker-support.gradle'
