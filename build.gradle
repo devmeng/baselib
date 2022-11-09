@@ -33,11 +33,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility rootProject.ext.android.jdkVersion
-        targetCompatibility rootProject.ext.android.jdkVersion
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = rootProject.ext.android.jdkVersion
+        jvmTarget = JavaVersion.VERSION_11
     }
     buildFeatures {
         viewBinding = true
@@ -48,10 +48,10 @@ afterEvaluate {
     publishing {
         publications {
             baselib(MavenPublication) {
+                from components.release
                 groupId = 'com.devmeng'
                 version = '1.0.0'
                 artifactId = 'baselib'
-                from components.release
             }
         }
     }
