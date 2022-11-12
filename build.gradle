@@ -2,9 +2,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id "com.android.library"
     id 'maven-publish'
-//    id 'aspectj'
 }
-
 //apply from: 'tinker-support.gradle'
 
 android {
@@ -100,44 +98,4 @@ dependencies {
     //aspectj
     api 'org.aspectj:aspectjrt:1.9.0'
 
-}
-import org.aspectj.bridge.IMessage
-import org.aspectj.bridge.MessageHandler
-import org.aspectj.tools.ajc.Main
-def variants = project.android.libraryVariants
-variants.all { variant ->
-    def javaCompile = variant.javaCompile
-    javaCompile.doLast {
-        String[] args = ["-showWeaveInfo",
-                         "-1.8",//对应插件module声明的Java版本
-                         "-inpath", javaCompile.destinationDir.toString(),
-                         "-aspectpath", javaCompile.classpath.asPath,
-                         "-d", javaCompile.destinationDir.toString(),
-                         "-classpath", javaCompile.classpath.asPath,
-                         "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
-
-        final def log = project.logger
-        log.debug "ajc args: " + Arrays.toString(args)
-
-        MessageHandler handler = new MessageHandler(true);
-        new Main().run(args, handler)
-        for (IMessage message : handler.getMessages(null, true)) {
-            switch (message.getKind()) {
-                case IMessage.ABORT:
-                case IMessage.ERROR:
-                case IMessage.FAIL:
-                    log.error message.message, message.thrown
-                    break
-                case IMessage.WARNING:
-                    log.warn message.message, message.thrown
-                    break
-                case IMessage.INFO:
-                    log.info message.message, message.thrown
-                    break
-                case IMessage.DEBUG:
-                    log.debug message.message, message.thrown
-                    break
-            }
-        }
-    }
 }

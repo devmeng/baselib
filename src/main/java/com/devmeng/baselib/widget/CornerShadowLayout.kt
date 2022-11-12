@@ -38,12 +38,12 @@ import com.devmeng.baselib.utils.Logger
 class CornerShadowLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.attr.defaultStyle
+    defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), SkinWidgetSupport {
 
     override val attrsList: MutableList<String> = mutableListOf(
-        "shadeColor",
-        "shadeRadius",
+        "shadowColor",
+        "shadowRadius",
         "allCornerRadius",
         "topLeftRadius",
         "topRightRadius",
@@ -67,7 +67,7 @@ class CornerShadowLayout @JvmOverloads constructor(
     private var paddingVertical: Int = 0
     private var paddingHorizontal: Int = 0
     var borderWidth: Float = 0F
-    var shadeRadius: Float = 0F
+    var shadowRadius: Float = 0F
     var allCornerRadius: Float = 0F
     var topLeftRadius: Float = 0F
     var topRightRadius: Float = 0F
@@ -75,8 +75,8 @@ class CornerShadowLayout @JvmOverloads constructor(
     var bottomRightRadius: Float = 0F
     var backRes: Int = 0
     var borderColor: Int = R.color.color_black_333
-    var backColor: Int = R.color.color_black_333
-    var shadeColor: Int = R.color.black
+    var backColor: Int = R.color.color_white_FFF
+    var shadowColor: Int = R.color.color_black_333
 
     //画笔
     private val cornerBackPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -106,7 +106,7 @@ class CornerShadowLayout @JvmOverloads constructor(
             backColor =
                 getColor(
                     R.styleable.CornerShadowLayout_backColor,
-                    getColor(R.color.color_white_FFF)
+                    getColor(backColor)
                 )
 
             //布局边框相关
@@ -116,18 +116,18 @@ class CornerShadowLayout @JvmOverloads constructor(
             )
             borderColor = getColor(
                 R.styleable.CornerShadowLayout_borderColor,
-                0
+                getColor(borderColor)
             )
 
             //布局阴影相关
-            shadeRadius = getDimension(
-                R.styleable.CornerShadowLayout_shadeRadius,
+            shadowRadius = getDimension(
+                R.styleable.CornerShadowLayout_shadowRadius,
                 0F
             )
-            shadeColor =
+            shadowColor =
                 getColor(
-                    R.styleable.CornerShadowLayout_shadeColor,
-                    0
+                    R.styleable.CornerShadowLayout_shadowColor,
+                    R.color.color_black_333
                 )
             //圆角相关
             allCornerRadius = getDimension(
@@ -174,10 +174,10 @@ class CornerShadowLayout @JvmOverloads constructor(
             color = backColor
             style = Paint.Style.FILL_AND_STROKE
             setShadowLayer(
-                shadeRadius,
+                shadowRadius,
                 0F,
                 0F,
-                shadeColor
+                shadowColor
             )
         }
 
@@ -196,7 +196,6 @@ class CornerShadowLayout @JvmOverloads constructor(
             return
         }
         setBackgroundResource(backRes)
-        Logger.d("天哪 initConfig 了")
     }
 
     private fun getRadiusArray(): FloatArray {
@@ -218,8 +217,8 @@ class CornerShadowLayout @JvmOverloads constructor(
         heightMode = MeasureSpec.getMode(heightMeasureSpec)
         widthSize = MeasureSpec.getSize(widthMeasureSpec)
         heightSize = MeasureSpec.getSize(heightMeasureSpec)
-        val widthOffset = widthOffsetConfig(shadeRadius.toInt() * 2)
-        val heightOffset = heightOffsetConfig(shadeRadius.toInt() * 2)
+        val widthOffset = widthOffsetConfig(shadowRadius.toInt() * 2)
+        val heightOffset = heightOffsetConfig(shadowRadius.toInt() * 2)
 
         when (widthMode) {
             MeasureSpec.EXACTLY -> {
@@ -228,19 +227,18 @@ class CornerShadowLayout @JvmOverloads constructor(
             }
             MeasureSpec.AT_MOST -> {
                 mWidth =
-                    (measuredWidth + shadeRadius.toInt() * 2)
+                    (measuredWidth + shadowRadius.toInt() * 2)
                         .coerceAtMost(resources.displayMetrics.widthPixels) + widthOffset
                 mHeight = calcHeight() + heightOffset
             }
             else -> {
                 mWidth =
-                    (measuredWidth + shadeRadius.toInt() * 2)
+                    (measuredWidth + shadowRadius.toInt() * 2)
                         .coerceAtMost(resources.displayMetrics.widthPixels) + widthOffset
                 mHeight = calcHeight() + heightOffset
             }
         }
         setMeasuredDimension(mWidth, mHeight)
-        Logger.d("天哪 onMeasure 了")
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -249,14 +247,12 @@ class CornerShadowLayout @JvmOverloads constructor(
         val offset =
             TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_PX,
-                shadeRadius,
+                shadowRadius,
                 resources.displayMetrics
             ).toInt() * 2
         val widthOffset = widthOffsetConfig(offset)
 
         val heightOffset = heightOffsetConfig(offset)
-
-        Logger.d("widthMode [$widthMode]  heightMode [$heightMode]")
 
         if (widthMode == MeasureSpec.AT_MOST) {
             when (heightMode) {
@@ -299,7 +295,7 @@ class CornerShadowLayout @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         with(canvas!!) {
-            val offset = (borderWidth + shadeRadius)
+            val offset = (borderWidth + shadowRadius)
             val bgRectF = RectF(
                 offset,
                 offset,
@@ -322,7 +318,6 @@ class CornerShadowLayout @JvmOverloads constructor(
             drawPath(borderPath, borderPaint)
 
         }
-        Logger.d("天哪 onDraw 了")
     }
 
     private fun widthOffsetConfig(offset: Int): Int {
@@ -362,7 +357,7 @@ class CornerShadowLayout @JvmOverloads constructor(
         if (heightMode == MeasureSpec.EXACTLY) {
             heightSize
         } else {
-            (measuredHeight + shadeRadius.toInt() * 2).coerceAtMost(heightSize)
+            (measuredHeight + shadowRadius.toInt() * 2).coerceAtMost(heightSize)
         }
 
     private fun getColor(color: Int) = context.getColor(color)
@@ -384,9 +379,9 @@ class CornerShadowLayout @JvmOverloads constructor(
             Logger.d("attrName -> [$attrName] resId -> [$resId]")
             when (attrName) {
                 "shadeColor" -> {
-                    shadeColor = SkinResources.instance.getColor(resId)
+                    shadowColor = SkinResources.instance.getColor(resId)
                 }
-                "shadeRadius" -> shadeRadius = SkinResources.instance.getDimension(resId)
+                "shadeRadius" -> shadowRadius = SkinResources.instance.getDimension(resId)
                 "allCornerRadius" -> {
                     allCornerRadius = SkinResources.instance.getDimension(resId)
                 }

@@ -20,4 +20,13 @@ fun toDp(context: Context, value: Float): Int {
     ).toInt()
 }
 
+fun toPx(context: Context, value: Float): Int {
+    val c = WeakReference(context).get()
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_PX,
+        value,
+        c?.resources?.displayMetrics
+    ).toInt()
+}
+
 fun getColor(context: Context, color: Int): Int = context.getColor(color)
