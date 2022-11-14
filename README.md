@@ -1,7 +1,5 @@
 # 项目功能
 
-[![](https://jitpack.io/v/devmeng/baselib.svg)](https://jitpack.io/#devmeng/baselib)
-
 ### 开发前的必需配置
 
 1. #### **将 baselib 中的 config.gradle 文件导入到工程目录下**
