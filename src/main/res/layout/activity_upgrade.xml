@@ -6,8 +6,8 @@
     android:layout_height="300dp"
     app:backColor="@color/color_white_FFF"
     app:allCornerRadius="@dimen/dp_10"
-    app:shadeColor="@color/color_gray_8A8A8A"
-    app:shadeRadius="@dimen/dp_10"
+    app:shadowColor="@color/color_gray_8A8A8A"
+    app:shadowRadius="@dimen/dp_10"
     android:layout_gravity="center"
     tools:context="ui.tinker.UpgradeActivity">
 

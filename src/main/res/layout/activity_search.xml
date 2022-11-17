@@ -88,8 +88,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shadeColor="@color/color_black_333"
-        app:shadeRadius="@dimen/dp_10">
+        app:shadowColor="@color/color_black_333"
+        app:shadowRadius="@dimen/dp_10">
 
         <TextView
             android:layout_width="wrap_content"

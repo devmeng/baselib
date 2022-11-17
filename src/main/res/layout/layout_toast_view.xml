@@ -9,8 +9,8 @@
     app:backColor="@color/color_white_FFF"
     app:borderColor="@color/color_black_333"
     app:borderWidth="@dimen/dp_1"
-    app:shadeColor="@color/color_black_333"
-    app:shadeRadius="@dimen/dp_10">
+    app:shadowColor="@color/color_black_333"
+    app:shadowRadius="@dimen/dp_10">
 
     <TextView
         android:id="@+id/tv_toast_view_message"

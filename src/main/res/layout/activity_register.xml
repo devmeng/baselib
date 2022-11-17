@@ -71,8 +71,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_go_sign_in"
-        app:shadeColor="@color/color_gray_8A8A8A"
-        app:shadeRadius="@dimen/dp_6">
+        app:shadowColor="@color/color_gray_8A8A8A"
+        app:shadowRadius="@dimen/dp_6">
 
         <TextView
             android:layout_width="wrap_content"

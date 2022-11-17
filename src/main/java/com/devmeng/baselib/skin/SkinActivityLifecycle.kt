@@ -32,12 +32,12 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
         if (isChangeTypeface) {
             skinTypeface = SkinThemeUtils.getSkinTypeface(activity)
         }
-        val layoutInflater = LayoutInflater.from(activity)
+        val layoutInflater = LayoutInflater.from(activity).cloneInContext(activity)
         try {
             //根据源码中 setFactory2 方法需将 mFactorySet 先设置成 false，才可使用
-            val field = LayoutInflater::class.java.getDeclaredField("mFactorySet")
+            /*val field = LayoutInflater::class.java.getDeclaredField("mFactorySet")
             field.isAccessible = true
-            field.setBoolean(layoutInflater, false)
+            field.setBoolean(layoutInflater, false)*/
 
         } catch (e: Exception) {
             e.printStackTrace()

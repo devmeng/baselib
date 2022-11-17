@@ -97,8 +97,8 @@ class LoadingView(
             borderWidth = loadBackBorderWidth
             allCornerRadius = toDp(context, 10f).toFloat()
             backColor = loadBackColor
-            shadeColor = loadBackShadeColor
-            shadeRadius = toDp(context, 10f).toFloat()
+            shadowColor = loadBackShadeColor
+            shadowRadius = toDp(context, 10f).toFloat()
             update()
         }
 
@@ -144,7 +144,7 @@ class LoadingView(
 
             when (child) {
                 is LottieAnimationView -> {
-                    val offset = cornerBack.shadeRadius * 2
+                    val offset = cornerBack.shadowRadius * 2
                     t = (cornerBack.top + offset).toInt()
                     child.layout(
                         l,
