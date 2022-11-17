@@ -23,7 +23,7 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
 
     private val isChangeTypeface = false
 
-    @SuppressLint("DiscouragedPrivateApi")
+    @SuppressLint("DiscouragedPrivateApi", "SoonBlockedPrivateApi")
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         //防止重启状态栏还原
 //        SkinThemeUtils.updateStatusBarState(activity)
@@ -32,18 +32,19 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
         if (isChangeTypeface) {
             skinTypeface = SkinThemeUtils.getSkinTypeface(activity)
         }
-        val layoutInflater = LayoutInflater.from(activity).cloneInContext(activity)
+        val layoutInflater = LayoutInflater.from(activity)
         try {
             //根据源码中 setFactory2 方法需将 mFactorySet 先设置成 false，才可使用
-            /*val field = LayoutInflater::class.java.getDeclaredField("mFactorySet")
+            val field = LayoutInflater::class.java.getDeclaredField("mFactorySet")
             field.isAccessible = true
-            field.setBoolean(layoutInflater, false)*/
+            field.setBoolean(layoutInflater, false)
 
         } catch (e: Exception) {
             e.printStackTrace()
         }
         val factory = SkinLayoutFactory(activity, skinTypeface)
-        layoutInflater.factory2 = factory
+        layoutInflater.factory = factory
+//        layoutInflater.factory2 = factory
         //注册观察者
         SkinManager.instance.addObserver(factory)
         factoryMap[activity] = factory
