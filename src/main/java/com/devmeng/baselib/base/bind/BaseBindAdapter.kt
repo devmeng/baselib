@@ -19,6 +19,8 @@ abstract class BaseBindAdapter<T : Any> :
 
     private var mList: MutableList<T>? = arrayListOf()
 
+    protected var oldPosition = -1
+
     var onItemClickListener: BaseBindViewHolder.OnItemClickListener<T>? = null
     var onItemViewClickListener: BaseBindViewHolder.OnItemViewClickListener<T>? = null
     var onItemLongClickListener: BaseBindViewHolder.OnItemLongClickListener<T>? = null
@@ -132,7 +134,12 @@ abstract class BaseBindAdapter<T : Any> :
      */
     fun setOnItemClickListener(holder: BaseBindViewHolder, itemData: T, position: Int) {
         holder.itemView.setOnClickListener {
+            if (position == oldPosition) {
+                onItemClickListener?.onItemReClick(itemData, position)
+                return@setOnClickListener
+            }
             onItemClickListener?.onItemClick(itemData, position)
+            oldPosition = position
         }
     }
 
@@ -157,6 +164,10 @@ abstract class BaseBindAdapter<T : Any> :
      */
     fun setOnItemViewClickListener(view: View, itemData: T, position: Int) {
         view.setOnClickListener {
+            if (position == oldPosition) {
+                onItemViewClickListener?.onViewReClick(view, itemData, position)
+                return@setOnClickListener
+            }
             onItemViewClickListener?.onViewClick(view, itemData, position)
         }
     }

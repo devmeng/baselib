@@ -93,10 +93,12 @@ open class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     interface OnItemClickListener<T> {
         fun onItemClick(holder: BaseViewHolder, itemData: T, position: Int)
+        fun onItemReClick(holder: BaseViewHolder, itemData: T, position: Int)
     }
 
     interface OnItemViewClickListener<T> {
         fun onViewClick(holder: BaseViewHolder, view: View, itemData: T, position: Int)
+        fun onViewReClick(holder: BaseViewHolder, view: View, itemData: T, position: Int)
     }
 
     interface OnItemLongClickListener<T> {

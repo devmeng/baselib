@@ -51,10 +51,12 @@ open class BaseBindViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
 
     interface OnItemClickListener<T> {
         fun onItemClick(itemData: T, position: Int)
+        fun onItemReClick(itemData: T, position: Int)
     }
 
     interface OnItemViewClickListener<T> {
         fun onViewClick(view: View, itemData: T, position: Int)
+        fun onViewReClick(view: View, itemData: T, position: Int)
     }
 
     interface OnItemLongClickListener<T> {

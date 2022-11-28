@@ -1,5 +1,6 @@
 package com.devmeng.baselib.base
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -11,13 +12,16 @@ import androidx.recyclerview.widget.RecyclerView
  * Date : 2022/5/30  18:09
  * Version : 1
  */
+@SuppressLint("NotifyDataSetChanged")
 abstract class BaseAdapter<T>(
     var context: Context,
     var type: Int
 ) :
     RecyclerView.Adapter<BaseViewHolder>() {
 
-    var mList: MutableList<T>? = ArrayList()
+    var mList: MutableList<T> = ArrayList()
+
+    private var oldPosition = -1
 
     var mOnItemClickListener: BaseViewHolder.OnItemClickListener<T>? = null
 
@@ -32,7 +36,7 @@ abstract class BaseAdapter<T>(
     abstract fun bind(holder: BaseViewHolder, itemData: T, position: Int)
 
     override fun getItemCount(): Int {
-        return mList!!.size
+        return mList.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -43,7 +47,7 @@ abstract class BaseAdapter<T>(
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        val itemData = mList!![position]
+        val itemData = mList[position]
         setOnItemClickListener(holder, itemData, position)
         bind(holder, itemData, position)
     }
@@ -53,7 +57,7 @@ abstract class BaseAdapter<T>(
     }
 
     fun refreshAdapter(list: MutableList<T>, first: Boolean, pageSize: Int) {
-        with(mList!!) {
+        with(mList) {
             when {
                 //第一次添加
                 first -> {
@@ -62,7 +66,7 @@ abstract class BaseAdapter<T>(
                     notifyDataSetChanged()
                 }
                 else -> {
-                    var preSize = size
+                    val preSize = size
                     addAll(list)
                     notifyItemRangeInserted(preSize, pageSize)
                 }
@@ -72,7 +76,7 @@ abstract class BaseAdapter<T>(
 
     open fun reverseData(list: MutableList<T>) {
         list.reverse()
-        with(mList!!) {
+        with(mList) {
             clear()
             addAll(list)
         }
@@ -80,7 +84,7 @@ abstract class BaseAdapter<T>(
     }
 
     open fun addItem(itemData: T, isReverse: Boolean) {
-        with(mList!!) {
+        with(mList) {
             when (isReverse) {
                 isReverse -> {
                     add(0, itemData)
@@ -97,13 +101,13 @@ abstract class BaseAdapter<T>(
     }
 
     open fun removeItem(position: Int) {
-        mList!!.removeAt(position)
+        mList.removeAt(position)
         notifyItemRemoved(position)
         notifyDataSetChanged()
     }
 
     open fun clearAdapter() {
-        mList!!.clear()
+        mList.clear()
         notifyDataSetChanged()
     }
 
@@ -112,7 +116,14 @@ abstract class BaseAdapter<T>(
         with(holder) {
 //            Logger.d("OnItemClickListener -> $mOnItemClickListener")
             itemView.setOnClickListener {
-                mOnItemClickListener!!.onItemClick(holder, itemData, position)
+                with(this@BaseAdapter.oldPosition) {
+                    if (position == this) {
+                        mOnItemClickListener?.onItemReClick(holder, itemData, position)
+                        return@setOnClickListener
+                    }
+                    mOnItemClickListener?.onItemClick(holder, itemData, position)
+                    this@BaseAdapter.oldPosition = position
+                }
             }
         }
     }
@@ -122,7 +133,7 @@ abstract class BaseAdapter<T>(
         with(holder) {
 //            Logger.d("mOnItemLongClickListener -> $mOnItemLongClickListener")
             itemView.setOnLongClickListener(View.OnLongClickListener {
-                mOnItemLongClickListener!!.onLongClick(holder, itemData, position)
+                mOnItemLongClickListener?.onLongClick(holder, itemData, position)
                 return@OnLongClickListener true
             })
         }
@@ -132,7 +143,14 @@ abstract class BaseAdapter<T>(
         with(view) {
 //            Logger.d("mOnItemViewClickListener -> $mOnItemViewClickListener")
             setOnClickListener {
-                mOnItemViewClickListener!!.onViewClick(holder, view, itemData, position)
+                with(this@BaseAdapter.oldPosition) {
+                    if (position == this) {
+                        mOnItemViewClickListener?.onViewReClick(holder, view, itemData, position)
+                        return@setOnClickListener
+                    }
+                    mOnItemViewClickListener?.onViewClick(holder, view, itemData, position)
+                    oldPosition = position
+                }
             }
         }
     }
@@ -146,7 +164,7 @@ abstract class BaseAdapter<T>(
         with(view) {
 //            Logger.d("mOnItemViewLongClickListener -> $mOnItemViewLongClickListener")
             setOnLongClickListener(View.OnLongClickListener {
-                mOnItemViewLongClickListener!!.onViewLongClick(holder, view, itemData, position)
+                mOnItemViewLongClickListener?.onViewLongClick(holder, view, itemData, position)
                 return@OnLongClickListener true
             })
         }

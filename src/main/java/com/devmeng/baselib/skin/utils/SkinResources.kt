@@ -122,7 +122,7 @@ class SkinResources private constructor() {
 
     private fun getSkinString(skinTypeFaceId: Int): String {
         if (skinTypeFaceId == 0) {
-            throw Resources.NotFoundException("请在 attrs.xml 中配置 skinTypeface 属性")
+            throw Resources.NotFoundException("如需对全局字体更换，请在 attrs.xml 中配置 skinTypeface 属性，无需可忽略")
         }
         if (isDefaultSkin) {
             return context.resources.getString(skinTypeFaceId)

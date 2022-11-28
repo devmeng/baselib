@@ -12,7 +12,6 @@
 
         <!--    status bar background color    -->
         <item name="android:statusBarColor">?attr/colorPrimaryDark</item>
-        <item name="skinTypeface">@string/skin_ttf_chu_chen_ti</item>
 
     </style>
 

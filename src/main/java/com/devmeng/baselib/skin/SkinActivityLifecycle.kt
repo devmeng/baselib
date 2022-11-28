@@ -43,8 +43,7 @@ class SkinActivityLifecycle : Application.ActivityLifecycleCallbacks {
             e.printStackTrace()
         }
         val factory = SkinLayoutFactory(activity, skinTypeface)
-        layoutInflater.factory = factory
-//        layoutInflater.factory2 = factory
+        layoutInflater.factory2 = factory
         //注册观察者
         SkinManager.instance.addObserver(factory)
         factoryMap[activity] = factory
