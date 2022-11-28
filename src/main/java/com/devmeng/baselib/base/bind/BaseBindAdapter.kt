@@ -14,7 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseBindAdapter<T : Any> :
     RecyclerView.Adapter<BaseBindViewHolder>() {
 
-    abstract fun bind(holder: BaseBindViewHolder, itemData: T, position: Int)
+    abstract fun bind(
+        holder: BaseBindViewHolder,
+        itemData: T,
+        position: Int
+    )
+
     abstract fun getItemViewBindingRoot(parent: ViewGroup): View
 
     protected var mList: MutableList<T>? = arrayListOf()
@@ -26,8 +31,13 @@ abstract class BaseBindAdapter<T : Any> :
     var onItemLongClickListener: BaseBindViewHolder.OnItemLongClickListener<T>? = null
     var onItemViewLongClickListener:
             BaseBindViewHolder.OnItemViewLongClickListener<T>? = null
+    private lateinit var parent: ViewGroup
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBindViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseBindViewHolder {
+        this.parent = parent
         return BaseBindViewHolder(getItemViewBindingRoot(parent))
     }
 
@@ -132,13 +142,13 @@ abstract class BaseBindAdapter<T : Any> :
      * @param itemData 当前点击的数据实体类
      * @param position 当前点击子条目下标
      */
-    fun setOnItemClickListener(holder: BaseBindViewHolder, itemData: T, position: Int) {
+    fun setOnItemClickListener(
+        holder: BaseBindViewHolder,
+        itemData: T,
+        position: Int
+    ) {
         holder.itemView.setOnClickListener {
-            if (position == oldPosition) {
-                onItemClickListener?.onItemReClick(itemData, position)
-                return@setOnClickListener
-            }
-            onItemClickListener?.onItemClick(itemData, position)
+            onItemClickListener?.onItemClick(holder, itemData, position)
             oldPosition = position
         }
     }
@@ -151,7 +161,7 @@ abstract class BaseBindAdapter<T : Any> :
      */
     fun setOnItemLongClickListener(holder: BaseBindViewHolder, itemData: T, position: Int) {
         holder.itemView.setOnLongClickListener {
-            onItemLongClickListener?.onLongClick(itemData, position)
+            onItemLongClickListener?.onLongClick(holder, itemData, position)
             true
         }
     }
@@ -164,10 +174,6 @@ abstract class BaseBindAdapter<T : Any> :
      */
     fun setOnItemViewClickListener(view: View, itemData: T, position: Int) {
         view.setOnClickListener {
-            if (position == oldPosition) {
-                onItemViewClickListener?.onViewReClick(view, itemData, position)
-                return@setOnClickListener
-            }
             onItemViewClickListener?.onViewClick(view, itemData, position)
         }
     }
