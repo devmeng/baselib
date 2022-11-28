@@ -17,7 +17,7 @@ abstract class BaseBindAdapter<T : Any> :
     abstract fun bind(holder: BaseBindViewHolder, itemData: T, position: Int)
     abstract fun getItemViewBindingRoot(parent: ViewGroup): View
 
-    var mList: MutableList<T>? = arrayListOf()
+    protected var mList: MutableList<T>? = arrayListOf()
 
     protected var oldPosition = -1
 
