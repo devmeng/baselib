@@ -116,14 +116,7 @@ abstract class BaseAdapter<T>(
         with(holder) {
 //            Logger.d("OnItemClickListener -> $mOnItemClickListener")
             itemView.setOnClickListener {
-                with(this@BaseAdapter.oldPosition) {
-                    if (position == this) {
-                        mOnItemClickListener?.onItemReClick(holder, itemData, position)
-                        return@setOnClickListener
-                    }
-                    mOnItemClickListener?.onItemClick(holder, itemData, position)
-                    this@BaseAdapter.oldPosition = position
-                }
+                mOnItemClickListener?.onItemClick(holder, itemData, position)
             }
         }
     }
@@ -143,14 +136,7 @@ abstract class BaseAdapter<T>(
         with(view) {
 //            Logger.d("mOnItemViewClickListener -> $mOnItemViewClickListener")
             setOnClickListener {
-                with(this@BaseAdapter.oldPosition) {
-                    if (position == this) {
-                        mOnItemViewClickListener?.onViewReClick(holder, view, itemData, position)
-                        return@setOnClickListener
-                    }
-                    mOnItemViewClickListener?.onViewClick(holder, view, itemData, position)
-                    oldPosition = position
-                }
+                mOnItemViewClickListener?.onViewClick(holder, view, itemData, position)
             }
         }
     }

@@ -215,6 +215,9 @@ class LoadingView(
         this.animation = alphaAnim
     }
 
+    /**
+     * 在自主创建的控件中 使用皮肤
+     */
     fun applySkin() {
         if (pairList.isNotEmpty()) {
             return
